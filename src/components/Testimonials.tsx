@@ -5,14 +5,14 @@ const testimonials = [
   {
     name: "Linh Châu",
     role: "Sinh viên, 21 tuổi (Niềng mắc cài kim loại)",
-    content: "Trước kia mình rất sợ ám vàng mắc cài, đánh răng thì hay chảy máu nướu. Từ khi chuyển sang dùng tinh chất rau má của SABAI CARE, nướu khỏe hẳn, đánh răng thơm lâu dã man. Một trải nghiệm hoàn toàn khác biệt so với các sản phẩm trước đây.",
+    content: "Trước kia mình rất sợ ám vàng mắc cài, đánh răng thì hay chảy máu nướu. Từ khi chuyển sang dùng tinh chất rau má của FURANO, nướu khỏe hẳn, đánh răng thơm lâu dã man. Một trải nghiệm hoàn toàn khác biệt so với các sản phẩm trước đây.",
     rating: 5,
     image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=200"
   },
   {
     name: "Mai Chi",
     role: "Nhân viên văn phòng, 26 tuổi (Invisalign)",
-    content: "Viên sủi vệ sinh khay niềng của SABAI thực sự là 'chân ái'. Đi làm chỉ cần thả vào cốc nước 15p là khay sạch bong, trong veo không mùi hôi. Highly recommend cho các bạn xài Invisalign nhẹ nhõm hẳn đi vài phần.",
+    content: "Viên sủi vệ sinh khay niềng của FURANO thực sự là 'chân ái'. Đi làm chỉ cần thả vào cốc nước 15p là khay sạch bong, trong veo không mùi hôi. Highly recommend cho các bạn xài Invisalign nhẹ nhõm hẳn đi vài phần.",
     rating: 5,
     image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200"
   },

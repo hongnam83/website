@@ -5,7 +5,7 @@ export default function Routine() {
     {
       num: "01",
       title: "Chải Sạch Mảng Bám",
-      desc: "Sử dụng bàn chải rãnh V/chữ U cùng Kem Đánh Răng SABAI CARE 7 Benefits đánh bay thức ăn thừa quang mắc cài.",
+      desc: "Sử dụng bàn chải rãnh V/chữ U cùng Kem Đánh Răng FURANO 7 Benefits đánh bay thức ăn thừa quang mắc cài.",
       img: "https://images.unsplash.com/photo-1597848212624-a19eb35e2651?auto=format&fit=crop&q=80&w=500"
     },
     {

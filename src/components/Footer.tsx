@@ -1,4 +1,5 @@
 import { Facebook, Instagram, Youtube, Phone, Mail, MapPin } from 'lucide-react';
+import FuranoLogo from './FuranoLogo';
 
 export default function Footer() {
   return (
@@ -8,13 +9,8 @@ export default function Footer() {
           
           {/* Brand Info */}
           <div className="lg:col-span-1">
-            <a href="#" className="flex items-center gap-2 mb-6">
-              <div className="w-8 h-8 bg-brand-600 rounded flex items-center justify-center">
-                <span className="text-white font-serif font-bold text-xl leading-none">S</span>
-              </div>
-              <span className="font-bold text-xl tracking-tight text-white">
-                SABAI CARE
-              </span>
+            <a href="#" className="flex items-center mb-6">
+              <FuranoLogo className="w-auto h-12" />
             </a>
             <p className="text-sm leading-relaxed mb-6">
               Thương hiệu dược mỹ phẩm hàng đầu cung cấp giải pháp chăm sóc toàn diện chuẩn y khoa thiết kế riêng cho người niềng răng tại Việt Nam.
@@ -78,7 +74,7 @@ export default function Footer() {
         </div>
 
         <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
-          <p>&copy; {new Date().getFullYear()} CÔNG TY TNHH SABAI CARE VN. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} CÔNG TY TNHH FURANO VN. All rights reserved.</p>
           <div className="flex gap-2 items-center">
             {/* Payment methods mock */}
             <div className="px-2 py-1 bg-white rounded text-gray-900 font-bold text-[10px]">VISA</div>

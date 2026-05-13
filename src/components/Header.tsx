@@ -2,6 +2,8 @@ import { motion } from 'motion/react';
 import { Menu, ShoppingBag, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
+import FuranoLogo from './FuranoLogo';
+
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -16,9 +18,10 @@ export default function Header() {
 
   const navLinks = [
     { name: 'Sản Phẩm', href: '#products' },
-    { name: 'Về SABAI CARE', href: '#about' },
-    { name: 'Chu Trình Trăm Sóc', href: '#routine' },
+    { name: 'Về FURANO', href: '#about' },
+    { name: 'Chu Trình Chăm Sóc', href: '#routine' },
     { name: 'Đánh Giá', href: '#testimonials' },
+    { name: 'Góc Kiến Thức', href: '#blog' },
   ];
 
   return (
@@ -29,13 +32,8 @@ export default function Header() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
         {/* Logo */}
-        <a href="#" className="flex items-center gap-2 z-50">
-          <div className="w-8 h-8 md:w-10 md:h-10 bg-brand-800 rounded-lg flex items-center justify-center">
-            <span className="text-white font-serif font-bold text-xl md:text-2xl leading-none">S</span>
-          </div>
-          <span className={`font-bold text-xl md:text-2xl tracking-tight ${isScrolled ? 'text-gray-900' : 'text-gray-900 lg:text-brand-900'}`}>
-            SABAI CARE
-          </span>
+        <a href="#" className="flex items-center z-50 group">
+          <FuranoLogo className="w-auto h-10 md:h-12 group-hover:scale-105 transition-transform" />
         </a>
 
         {/* Desktop Nav */}
@@ -55,14 +53,11 @@ export default function Header() {
 
         {/* Actions */}
         <div className="flex items-center gap-4 z-50">
-          <button className={`p-2 rounded-full hover:bg-gray-100 transition-colors ${isScrolled ? 'text-gray-900' : 'text-gray-900'}`}>
-            <ShoppingBag className="w-5 h-5" />
-          </button>
           <a
             href="#products"
             className="hidden md:inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium text-white bg-brand-800 hover:bg-brand-700 rounded-full transition-colors"
           >
-            Mua Ngay
+            Nhận Tư Vấn
           </a>
           <button
             className={`lg:hidden p-2 -mr-2 ${isScrolled ? 'text-gray-900' : 'text-gray-900'}`}
@@ -97,7 +92,7 @@ export default function Header() {
                   onClick={() => setMobileMenuOpen(false)}
                   className="flex items-center justify-center w-full px-4 py-3 text-base font-medium text-white bg-brand-800 rounded-xl"
                 >
-                  Mua Ngay
+                  Nhận Tư Vấn
                 </a>
               </div>
             </div>

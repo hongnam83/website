@@ -30,7 +30,7 @@ export default function Hero() {
             </h1>
             
             <p className="text-lg md:text-xl text-gray-600 mb-8 leading-relaxed max-w-lg">
-              Giải pháp chăm sóc toàn diện từ SABAI CARE. Đánh bay mảng bám, ngăn ngừa viêm lợi và giữ nụ cười tự tin trong suốt thai kỳ chỉnh nha của bạn.
+              Giải pháp chăm sóc toàn diện từ FURANO. Đánh bay mảng bám, ngăn ngừa viêm lợi và giữ nụ cười tự tin trong suốt thai kỳ chỉnh nha của bạn.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 mb-10">
@@ -38,7 +38,7 @@ export default function Hero() {
                 href="#products"
                 className="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-white bg-brand-800 hover:bg-brand-900 rounded-full transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
               >
-                Khám Phá Sản Phẩm
+                Xem Danh Mục Sản Phẩm
                 <ArrowRight className="w-5 h-5 ml-2" />
               </a>
               <a

@@ -30,7 +30,7 @@ export default function About() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-brand-800 font-semibold tracking-wider uppercase text-sm mb-3">Về SABAI CARE</h2>
+            <h2 className="text-brand-800 font-semibold tracking-wider uppercase text-sm mb-3">Về FURANO</h2>
             <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 leading-tight">
               Thấu hiểu hành trình <br className="hidden sm:block" />
               <span className="font-serif italic text-brand-800">kiến tạo nụ cười</span> của bạn.
@@ -40,7 +40,7 @@ export default function About() {
                 Niềng răng là một khoản đầu tư lớn cho tương lai, nhưng hành trình chạm đến nụ cười hoàn mỹ không hề dễ dàng. Thức ăn giắt vào mắc cài, nỗi lo sâu răng, viêm nướu, hay mùi hơi thở khó chịu là rào cản khiến bạn e ngại.
               </p>
               <p>
-                SABAI CARE ra đời với sứ mệnh mang đến <strong>sự bảo vệ toàn diện và tinh tế nhất</strong>. Chúng tôi không chỉ bán kem đánh răng, chúng tôi cung cấp giải pháp, sự tự tin và sự an tâm tuyệt đối trong suốt quá trình chỉnh nha của bạn.
+                FURANO ra đời với sứ mệnh mang đến <strong>sự bảo vệ toàn diện và tinh tế nhất</strong>. Chúng tôi không chỉ bán kem đánh răng, chúng tôi cung cấp giải pháp, sự tự tin và sự an tâm tuyệt đối trong suốt quá trình chỉnh nha của bạn.
               </p>
             </div>
 

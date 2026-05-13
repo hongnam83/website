@@ -10,6 +10,7 @@ import About from './components/About';
 import Products from './components/Products';
 import Routine from './components/Routine';
 import Testimonials from './components/Testimonials';
+import Blog from './components/Blog';
 import FAQ from './components/FAQ';
 import CTASection from './components/CTASection';
 import Footer from './components/Footer';
@@ -25,6 +26,7 @@ export default function App() {
         <Products />
         <Routine />
         <Testimonials />
+        <Blog />
         <FAQ />
         <CTASection />
       </main>
