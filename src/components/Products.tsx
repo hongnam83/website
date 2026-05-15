@@ -91,10 +91,20 @@ export default function Products() {
                   <h4 className="text-2xl font-bold text-gray-900">{category.title}</h4>
                   <p className="text-gray-500 mt-2">{category.description}</p>
                 </div>
-                <a href="#" className="flex items-center text-brand-800 font-medium hover:text-brand-900 group whitespace-nowrap">
+                <Link to={`/products`} className="flex items-center text-brand-800 font-medium hover:text-brand-900 group whitespace-nowrap">
                   Xem tất cả {category.title} <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                </a>
+                </Link>
               </div>
+
+              {category.heroImage && (
+                <div className="w-full h-48 md:h-64 lg:h-80 rounded-[2rem] overflow-hidden mb-12 shadow-sm block group">
+                  <img 
+                    src={category.heroImage} 
+                    alt={category.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" 
+                  />
+                </div>
+              )}
 
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 {category.products.map((product, pIndex) => (
