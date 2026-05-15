@@ -1,5 +1,5 @@
-import { motion } from 'motion/react';
-import { Menu, ShoppingBag, X } from 'lucide-react';
+import { Link, NavLink } from 'react-router-dom';
+import { Menu, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 import FuranoLogo from './FuranoLogo';
@@ -17,50 +17,56 @@ export default function Header() {
   }, []);
 
   const navLinks = [
-    { name: 'Sản Phẩm', href: '#products' },
-    { name: 'Về FURANO', href: '#about' },
-    { name: 'Chu Trình Chăm Sóc', href: '#routine' },
-    { name: 'Đánh Giá', href: '#testimonials' },
-    { name: 'Góc Kiến Thức', href: '#blog' },
+    { name: 'Trang Chủ', href: '/' },
+    { name: 'Sản Phẩm', href: '/products' },
+    { name: 'Về FURANO', href: '/about' },
+    { name: 'Góc Kiến Thức', href: '/blog' },
+    { name: 'Hỏi Đáp', href: '/faq' },
   ];
 
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-6'
+        isScrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-4'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
         {/* Logo */}
-        <a href="#" className="flex items-center z-50 group">
-          <FuranoLogo className="w-auto h-10 md:h-12 group-hover:scale-105 transition-transform" />
-        </a>
+        <Link 
+          to="/"
+          className="flex items-center z-50 group bg-white rounded-xl shadow-sm p-1.5"
+          onClick={() => setMobileMenuOpen(false)}
+        >
+          <FuranoLogo className="w-auto h-8 md:h-10 group-hover:scale-105 transition-transform" />
+        </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden lg:flex items-center gap-8">
+        <nav className="hidden lg:flex items-center gap-8 bg-white/70 backdrop-blur-md px-8 py-3 rounded-full shadow-sm border border-gray-100">
           {navLinks.map((link) => (
-            <a
+            <NavLink
               key={link.name}
-              href={link.href}
-              className={`text-sm font-medium hover:text-brand-800 transition-colors ${
-                isScrolled ? 'text-gray-600' : 'text-gray-800'
-              }`}
+              to={link.href}
+              className={({ isActive }) => 
+                `text-sm font-semibold transition-colors hover:text-brand-800 ${
+                  isActive ? 'text-brand-800' : 'text-gray-600'
+                }`
+              }
             >
               {link.name}
-            </a>
+            </NavLink>
           ))}
         </nav>
 
         {/* Actions */}
         <div className="flex items-center gap-4 z-50">
-          <a
-            href="#products"
-            className="hidden md:inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium text-white bg-brand-800 hover:bg-brand-700 rounded-full transition-colors"
+          <Link
+            to="/products"
+            className="hidden md:inline-flex items-center justify-center px-6 py-2.5 text-sm font-semibold text-white bg-brand-800 hover:bg-brand-700 rounded-full transition-colors shadow-md hover:shadow-lg"
           >
             Nhận Tư Vấn
-          </a>
+          </Link>
           <button
-            className={`lg:hidden p-2 -mr-2 ${isScrolled ? 'text-gray-900' : 'text-gray-900'}`}
+            className="lg:hidden p-2 -mr-2 text-gray-900 bg-white rounded-full shadow-sm"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -69,34 +75,33 @@ export default function Header() {
 
         {/* Mobile Menu Overlay */}
         {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="absolute top-full left-0 right-0 bg-white shadow-xl border-t border-gray-100 py-4 px-4 lg:hidden"
-          >
-            <div className="flex flex-col space-y-4">
+          <div className="absolute top-full left-0 right-0 bg-white shadow-xl border-t border-gray-100 py-4 px-4 lg:hidden h-screen flex flex-col">
+            <div className="flex flex-col space-y-2">
               {navLinks.map((link) => (
-                <a
+                <NavLink
                   key={link.name}
-                  href={link.href}
+                  to={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-base font-medium leading-6 text-gray-900 p-2 hover:bg-gray-50 rounded-lg"
+                  className={({ isActive }) => 
+                    `text-base font-semibold leading-6 p-3 rounded-xl transition-colors ${
+                      isActive ? 'bg-brand-50 text-brand-800' : 'text-gray-900 hover:bg-gray-50'
+                    }`
+                  }
                 >
                   {link.name}
-                </a>
+                </NavLink>
               ))}
-              <div className="pt-4 border-t border-gray-100">
-                <a
-                  href="#products"
+              <div className="pt-4 border-t border-gray-100 mt-4">
+                <Link
+                  to="/products"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-center w-full px-4 py-3 text-base font-medium text-white bg-brand-800 rounded-xl"
+                  className="flex items-center justify-center w-full px-4 py-3.5 text-base font-semibold text-white bg-brand-800 rounded-xl"
                 >
                   Nhận Tư Vấn
-                </a>
+                </Link>
               </div>
             </div>
-          </motion.div>
+          </div>
         )}
       </div>
     </header>

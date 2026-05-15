@@ -3,34 +3,33 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
-import Hero from './components/Hero';
-import Logos from './components/Logos';
-import About from './components/About';
-import Products from './components/Products';
-import Routine from './components/Routine';
-import Testimonials from './components/Testimonials';
-import Blog from './components/Blog';
-import FAQ from './components/FAQ';
-import CTASection from './components/CTASection';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
+import Home from './pages/Home';
+import AboutPage from './pages/AboutPage';
+import ProductsPage from './pages/ProductsPage';
+import BlogPage from './pages/BlogPage';
+import FAQPage from './pages/FAQPage';
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-white selection:bg-brand-200 selection:text-brand-900 font-sans">
-      <Header />
-      <main>
-        <Hero />
-        <Logos />
-        <About />
-        <Products />
-        <Routine />
-        <Testimonials />
-        <Blog />
-        <FAQ />
-        <CTASection />
-      </main>
-      <Footer />
-    </div>
+    <Router>
+      <ScrollToTop />
+      <div className="min-h-screen bg-white selection:bg-brand-200 selection:text-brand-900 font-sans flex flex-col">
+        <Header />
+        <div className="flex-grow">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/products" element={<ProductsPage />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/faq" element={<FAQPage />} />
+          </Routes>
+        </div>
+        <Footer />
+      </div>
+    </Router>
   );
 }
