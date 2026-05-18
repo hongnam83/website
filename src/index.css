@@ -5,17 +5,28 @@
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-serif: 'Playfair Display', ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 
-  --color-brand-50: #f0f7ff;
-  --color-brand-100: #e0effe;
-  --color-brand-200: #bae0fd;
-  --color-brand-300: #7cc5fb;
-  --color-brand-400: #36a6f6;
-  --color-brand-500: #0d8aeb;
-  --color-brand-600: #006bc8;
-  --color-brand-700: #0056a3;
-  --color-brand-800: #004aad; /* Main requested color */
-  --color-brand-900: #044080;
-  --color-brand-950: #032955;
+  --color-brand-50: #F6F6F6;
+  --color-brand-100: #E8F8F4;
+  --color-brand-200: #C7FFD8;
+  --color-brand-300: #A8EFEA;
+  --color-brand-400: #98DED9;
+  --color-brand-500: #6BCBCC;
+  --color-brand-600: #45A7AC;
+  --color-brand-700: #297486;
+  --color-brand-800: #161D6F;
+  --color-brand-900: #0E134F;
+  --color-brand-950: #080A2E;
+
+  --color-gray-50: #F5F6F9;
+  --color-gray-100: #EAEDF4;
+  --color-gray-200: #D1D8E6;
+  --color-gray-300: #AEBBD1;
+  --color-gray-400: #8A9DBA;
+  --color-gray-500: #697E9E;
+  --color-gray-600: #506282;
+  --color-gray-700: #3D4B66;
+  --color-gray-800: #2B354C;
+  --color-gray-900: #1A2133;
 }
 
 html {
@@ -24,8 +35,8 @@ html {
 
 body {
   font-family: var(--font-sans);
-  color: #111827;
-  background-color: #ffffff;
+  color: var(--color-brand-900);
+  background-color: var(--color-brand-50);
 }
 
 /* Custom utility for text gradient */

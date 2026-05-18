@@ -3,7 +3,7 @@ import FuranoLogo from './FuranoLogo';
 
 export default function Footer() {
   return (
-    <footer className="bg-slate-100 text-gray-600 pt-20 pb-10 border-t border-slate-200">
+    <footer className="bg-brand-50 text-gray-600 pt-20 pb-10 border-t border-brand-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-16">
           
@@ -73,7 +73,7 @@ export default function Footer() {
 
         </div>
 
-        <div className="pt-8 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
+        <div className="pt-8 border-t border-brand-200 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
           <p>&copy; {new Date().getFullYear()} CÔNG TY TNHH FURANO VN. All rights reserved.</p>
           <div className="flex gap-2 items-center">
             {/* Payment methods mock */}
