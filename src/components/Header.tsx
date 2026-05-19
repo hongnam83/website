@@ -1,14 +1,16 @@
 import { Link, NavLink } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import FuranoLogo from './FuranoLogo';
 
 export default function Header() {
+  const { t, i18n } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
-  const [currentLang, setCurrentLang] = useState('VN');
+  const [currentLang, setCurrentLang] = useState(i18n.language === 'en' ? 'EN' : 'VN');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,11 +21,11 @@ export default function Header() {
   }, []);
 
   const navLinks = [
-    { name: 'Trang Chủ', href: '/' },
-    { name: 'Sản Phẩm', href: '/products' },
-    { name: 'Về FURANO', href: '/about' },
-    { name: 'Góc Kiến Thức', href: '/blog' },
-    { name: 'Hỏi Đáp', href: '/faq' },
+    { name: t('Trang Chủ'), href: '/' },
+    { name: t('Sản Phẩm'), href: '/products' },
+    { name: t('Về FURANO'), href: '/about' },
+    { name: t('Góc Kiến Thức'), href: '/blog' },
+    { name: t('Hỏi Đáp'), href: '/faq' },
   ];
 
   return (
@@ -82,14 +84,14 @@ export default function Header() {
               <div className="absolute right-0 mt-2 w-32 bg-white rounded-xl shadow-lg border border-gray-100 py-2 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2">
                 <button 
                   className={`w-full flex items-center gap-3 px-4 py-2 text-sm text-left hover:bg-gray-50 transition-colors ${currentLang === 'VN' ? 'font-bold text-brand-800 bg-brand-50/50' : 'text-gray-700'}`}
-                  onClick={() => { setCurrentLang('VN'); setLangDropdownOpen(false); }}
+                  onClick={() => { setCurrentLang('VN'); i18n.changeLanguage('vi'); setLangDropdownOpen(false); }}
                 >
                   <img src="https://flagcdn.com/w20/vn.png" alt="VN" className="w-5 h-auto rounded-sm" />
                   Tiếng Việt
                 </button>
                 <button 
                   className={`w-full flex items-center gap-3 px-4 py-2 text-sm text-left hover:bg-gray-50 transition-colors ${currentLang === 'EN' ? 'font-bold text-brand-800 bg-brand-50/50' : 'text-gray-700'}`}
-                  onClick={() => { setCurrentLang('EN'); setLangDropdownOpen(false); }}
+                  onClick={() => { setCurrentLang('EN'); i18n.changeLanguage('en'); setLangDropdownOpen(false); }}
                 >
                   <img src="https://flagcdn.com/w20/gb.png" alt="EN" className="w-5 h-auto rounded-sm" />
                   English
@@ -98,12 +100,6 @@ export default function Header() {
             )}
           </div>
 
-          <Link
-            to="/products"
-            className="hidden md:inline-flex items-center justify-center px-6 py-2.5 text-sm font-semibold text-white bg-brand-800 hover:bg-brand-700 rounded-full transition-colors shadow-md hover:shadow-lg"
-          >
-            Nhận Tư Vấn
-          </Link>
           <button
             className="lg:hidden p-2 -mr-2 text-gray-900 bg-white rounded-full shadow-sm"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -130,15 +126,6 @@ export default function Header() {
                   {link.name}
                 </NavLink>
               ))}
-              <div className="pt-4 border-t border-gray-100 mt-4">
-                <Link
-                  to="/products"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-center w-full px-4 py-3.5 text-base font-semibold text-white bg-brand-800 rounded-xl"
-                >
-                  Nhận Tư Vấn
-                </Link>
-              </div>
             </div>
           </div>
         )}

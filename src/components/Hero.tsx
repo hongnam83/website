@@ -1,7 +1,10 @@
 import { motion } from 'motion/react';
 import { ArrowRight, Star, ShieldCheck } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export default function Hero() {
+  const { t } = useTranslation();
+
   return (
     <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-brand-50" id="home">
       {/* Abstract Background Element */}
@@ -20,17 +23,17 @@ export default function Hero() {
           >
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-100 text-brand-800 font-medium text-sm mb-6">
               <ShieldCheck className="w-4 h-4" />
-              <span>Chuyên gia chăm sóc răng niềng</span>
+              <span>{t('Chuyên gia chăm sóc răng niềng', 'Chuyên gia chăm sóc răng niềng')}</span>
             </div>
             
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 mb-6 leading-[1.1]">
-              Nụ Cười Hoàn Mỹ <br />
-              <span className="text-gradient font-serif italic text-5xl md:text-6xl lg:text-7xl pr-2">Dành Riêng Cho</span><br />
-              Team Niềng Răng
+              {t('Nụ Cười Hoàn Mỹ')} <br />
+              <span className="text-gradient font-serif italic text-5xl md:text-6xl lg:text-7xl pr-2">{t('Dành Riêng Cho')}</span><br />
+              {t('Team Niềng Răng')}
             </h1>
             
             <p className="text-lg md:text-xl text-gray-600 mb-8 leading-relaxed max-w-lg">
-              Giải pháp chăm sóc toàn diện từ FURANO. Đánh bay mảng bám, ngăn ngừa viêm lợi và giữ nụ cười tự tin trong suốt thai kỳ chỉnh nha của bạn.
+              {t('Giải pháp chăm sóc toàn diện từ FURANO. Đánh bay mảng bám, ngăn ngừa viêm lợi và giữ nụ cười tự tin trong suốt thai kỳ chỉnh nha của bạn.')}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 mb-10">
@@ -38,14 +41,14 @@ export default function Hero() {
                 href="#products"
                 className="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-white bg-brand-800 hover:bg-brand-900 rounded-full transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
               >
-                Xem Danh Mục Sản Phẩm
+                {t('Xem Danh Mục Sản Phẩm', 'Xem Danh Mục Sản Phẩm')}
                 <ArrowRight className="w-5 h-5 ml-2" />
               </a>
               <a
                 href="#routine"
                 className="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-brand-800 bg-white border border-brand-200 hover:bg-brand-50 rounded-full transition-colors"
               >
-                Xem Chu Trình Chuẩn
+                {t('Xem Chu Trình Chuẩn', 'Xem Chu Trình Chuẩn')}
               </a>
             </div>
 
@@ -75,7 +78,7 @@ export default function Hero() {
                   <Star className="w-4 h-4 fill-current" />
                 </div>
                 <p className="text-sm text-gray-600 font-medium whitespace-nowrap">
-                  Hơn <span className="text-gray-900 font-bold">10,000+</span> khách hàng tin dùng
+                  {t('Hơn')} <span className="text-gray-900 font-bold">10,000+</span> {t('khách hàng tin dùng')}
                 </p>
               </div>
             </div>
@@ -108,8 +111,8 @@ export default function Hero() {
                     <ShieldCheck className="w-6 h-6" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-gray-900 text-sm">Được nha sĩ khuyên dùng</h3>
-                    <p className="text-xs text-gray-500 mt-0.5">An toàn tuyệt đối cho men răng & mắc cài</p>
+                    <h3 className="font-bold text-gray-900 text-sm">{t('Được nha sĩ khuyên dùng')}</h3>
+                    <p className="text-xs text-gray-500 mt-0.5">{t('An toàn tuyệt đối cho men răng & mắc cài')}</p>
                   </div>
                 </div>
               </motion.div>
