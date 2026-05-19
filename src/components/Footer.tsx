@@ -1,7 +1,9 @@
 import { Facebook, Instagram, Youtube, Phone, Mail, MapPin } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import FuranoLogo from './FuranoLogo';
 
 export default function Footer() {
+  const { t } = useTranslation();
   return (
     <footer className="bg-brand-50 text-gray-600 pt-20 pb-10 border-t border-brand-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -13,7 +15,7 @@ export default function Footer() {
               <FuranoLogo className="w-auto h-12" />
             </a>
             <p className="text-sm leading-relaxed mb-6">
-              Thương hiệu dược mỹ phẩm hàng đầu cung cấp giải pháp chăm sóc toàn diện chuẩn y khoa thiết kế riêng cho người niềng răng tại Việt Nam.
+              {t("Thương hiệu dược mỹ phẩm hàng đầu cung cấp giải pháp chăm sóc toàn diện chuẩn y khoa thiết kế riêng cho người niềng răng tại Việt Nam.")}
             </p>
             <div className="flex gap-4">
               <a href="#" className="w-10 h-10 rounded-full bg-white hover:bg-brand-600 hover:text-white flex items-center justify-center transition-colors text-gray-500 shadow-sm">
@@ -30,11 +32,11 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="text-gray-900 font-bold mb-6 text-lg">Liên Hệ</h4>
+            <h4 className="text-gray-900 font-bold mb-6 text-lg">{t("Liên Hệ")}</h4>
             <ul className="space-y-4 text-sm">
               <li className="flex gap-3">
                 <MapPin className="w-5 h-5 text-gray-400 shrink-0" />
-                <span>Số 123 Đường Nguyễn Trãi, Quận Thanh Xuân, Hà Nội, Việt Nam</span>
+                <span>{t("Số 123 Đường Nguyễn Trãi, Quận Thanh Xuân, Hà Nội, Việt Nam")}</span>
               </li>
               <li className="flex gap-3 items-center">
                 <Phone className="w-5 h-5 text-gray-400 shrink-0" />
@@ -49,32 +51,32 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-gray-900 font-bold mb-6 text-lg">Hỗ Trợ Khách Hàng</h4>
+            <h4 className="text-gray-900 font-bold mb-6 text-lg">{t("Hỗ Trợ Khách Hàng")}</h4>
             <ul className="space-y-3 text-sm flex flex-col">
-              <li><a href="#" className="hover:text-brand-800 transition-colors">Chính sách vận chuyển</a></li>
-              <li><a href="#" className="hover:text-brand-800 transition-colors">Chính sách đổi trả & hoàn tiền</a></li>
-              <li><a href="#" className="hover:text-brand-800 transition-colors">Chính sách bảo mật thông tin</a></li>
-              <li><a href="#" className="hover:text-brand-800 transition-colors">Hướng dẫn mua hàng</a></li>
-              <li><a href="#" className="hover:text-brand-800 transition-colors">Tra cứu đơn hàng</a></li>
+              <li><a href="#" className="hover:text-brand-800 transition-colors">{t("Chính sách vận chuyển")}</a></li>
+              <li><a href="#" className="hover:text-brand-800 transition-colors">{t("Chính sách đổi trả & hoàn tiền")}</a></li>
+              <li><a href="#" className="hover:text-brand-800 transition-colors">{t("Chính sách bảo mật thông tin")}</a></li>
+              <li><a href="#" className="hover:text-brand-800 transition-colors">{t("Hướng dẫn mua hàng")}</a></li>
+              <li><a href="#" className="hover:text-brand-800 transition-colors">{t("Tra cứu đơn hàng")}</a></li>
             </ul>
           </div>
 
           {/* Products */}
           <div>
-            <h4 className="text-gray-900 font-bold mb-6 text-lg">Sản Phẩm</h4>
+            <h4 className="text-gray-900 font-bold mb-6 text-lg">{t("Sản Phẩm")}</h4>
             <ul className="space-y-3 text-sm flex flex-col">
-              <li><a href="#" className="hover:text-brand-800 transition-colors">Kem đánh răng mắc cài</a></li>
-              <li><a href="#" className="hover:text-brand-800 transition-colors">Viên sủi vệ sinh Invisalign</a></li>
-              <li><a href="#" className="hover:text-brand-800 transition-colors">Nước súc miệng Cherry</a></li>
-              <li><a href="#" className="hover:text-brand-800 transition-colors">Bàn chải kẽ chuyên dụng</a></li>
-              <li><a href="#" className="hover:text-brand-800 transition-colors">Combo Siêu Tiết Kiệm</a></li>
+              <li><a href="#" className="hover:text-brand-800 transition-colors">{t("Kem đánh răng mắc cài")}</a></li>
+              <li><a href="#" className="hover:text-brand-800 transition-colors">{t("Viên sủi vệ sinh Invisalign")}</a></li>
+              <li><a href="#" className="hover:text-brand-800 transition-colors">{t("Nước súc miệng Cherry")}</a></li>
+              <li><a href="#" className="hover:text-brand-800 transition-colors">{t("Bàn chải kẽ chuyên dụng")}</a></li>
+              <li><a href="#" className="hover:text-brand-800 transition-colors">{t("Combo Siêu Tiết Kiệm")}</a></li>
             </ul>
           </div>
 
         </div>
 
         <div className="pt-8 border-t border-brand-200 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
-          <p>&copy; {new Date().getFullYear()} CÔNG TY TNHH FURANO VN. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} {t("CÔNG TY TNHH FURANO VN. All rights reserved.")}</p>
           <div className="flex gap-2 items-center">
             {/* Payment methods mock */}
             <div className="px-2 py-1 bg-white rounded text-gray-600 font-bold text-[10px] shadow-sm">VISA</div>

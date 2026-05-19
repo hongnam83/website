@@ -3,9 +3,11 @@ import {ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { categories } from '../data/products';
 import { useState } from 'react';
 import CTASection from '../components/CTASection';
+import { useTranslation } from 'react-i18next';
 
 export default function ProductDetailPage() {
   const { id } = useParams();
+  const { t } = useTranslation();
   
   // Find product across all categories
   const product = categories.flatMap(cat => cat.products).find(p => p.id === id);
@@ -13,9 +15,9 @@ export default function ProductDetailPage() {
   if (!product) {
     return (
       <div className="min-h-screen pt-32 px-4 text-center">
-        <h2 className="text-2xl font-bold mb-4">Không tìm thấy sản phẩm</h2>
+        <h2 className="text-2xl font-bold mb-4">{t("Không tìm thấy sản phẩm")}</h2>
         <Link to="/products" className="text-brand-800 font-medium hover:underline">
-          Quay lại danh sách sản phẩm
+          {t("Quay lại danh sách sản phẩm")}
         </Link>
       </div>
     );
@@ -31,7 +33,7 @@ export default function ProductDetailPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-grow w-full">
         <Link to="/products" className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-brand-800 mb-8 transition-colors">
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Tất cả sản phẩm
+          {t("Tất cả sản phẩm")}
         </Link>
 
         <div className="grid md:grid-cols-2 gap-12 lg:gap-16 bg-white p-6 md:p-12 rounded-[2rem] shadow-sm border border-gray-100 items-start">
@@ -47,7 +49,7 @@ export default function ProductDetailPage() {
             
             {hasVariants && product.variants && (
               <div className="flex items-center gap-4">
-                <span className="text-sm font-medium text-gray-500">Lựa chọn phân loại:</span>
+                <span className="text-sm font-medium text-gray-500">{t("Lựa chọn phân loại:")}</span>
                 <div className="flex gap-3">
                   {product.variants.map((variant, idx) => (
                     <button
@@ -56,7 +58,7 @@ export default function ProductDetailPage() {
                       className={`relative w-8 h-8 rounded-full border-2 transition-all ${
                         selectedVariant === idx ? 'border-gray-900 scale-110' : 'border-transparent hover:scale-110'
                       } flex items-center justify-center`}
-                      title={variant.name}
+                      title={t(variant.name)}
                     >
                       <span className={`w-full h-full rounded-full ${variant.colorClass} shadow-inner`}></span>
                     </button>
@@ -67,18 +69,18 @@ export default function ProductDetailPage() {
             
             {hasVariants && product.variants && (
                <div className="p-4 bg-brand-50 rounded-xl">
-                 <p className="text-brand-800 font-medium">Đang chọn: <span className="font-bold">{product.variants[selectedVariant].name}</span></p>
+                 <p className="text-brand-800 font-medium">{t("Đang chọn:")} <span className="font-bold">{t(product.variants[selectedVariant].name)}</span></p>
                </div>
             )}
           </div>
 
           {/* Product Info */}
           <div className="flex flex-col">
-            <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">{product.name}</h1>
+            <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">{t(product.name)}</h1>
             
             {product.specs && (
                <div className="inline-block px-4 py-2 bg-gray-100 rounded-lg text-sm font-medium text-gray-700 mb-6 w-fit">
-                 {product.specs}
+                 {t(product.specs)}
                </div>
             )}
 
@@ -86,12 +88,12 @@ export default function ProductDetailPage() {
               {/* Main Uses */}
               {product.mainUses && (
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4 border-b border-gray-100 pb-2">Ưu Điểm Nổi Bật</h3>
+                  <h3 className="text-xl font-bold text-gray-900 mb-4 border-b border-gray-100 pb-2">{t("Ưu Điểm Nổi Bật")}</h3>
                   <ul className="space-y-3">
                     {product.mainUses.map((use, i) => (
                       <li key={i} className="flex text-gray-600 leading-relaxed">
                         <CheckCircle2 className="w-5 h-5 text-brand-500 mr-3 shrink-0 mt-0.5" />
-                        <span>{use}</span>
+                        <span>{t(use)}</span>
                       </li>
                     ))}
                   </ul>
@@ -101,12 +103,12 @@ export default function ProductDetailPage() {
               {/* Ingredients / Materials */}
               {product.ingredients && (
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4 border-b border-gray-100 pb-2">Thành Phần & Công Thức</h3>
+                  <h3 className="text-xl font-bold text-gray-900 mb-4 border-b border-gray-100 pb-2">{t("Thành Phần & Công Thức")}</h3>
                   <ul className="space-y-3">
                     {product.ingredients.map((ing, i) => (
                       <li key={i} className="flex text-gray-600 leading-relaxed items-start">
                         <div className="w-1.5 h-1.5 rounded-full bg-brand-400 mr-3 mt-2 shrink-0"></div>
-                        <span>{ing}</span>
+                        <span>{t(ing)}</span>
                       </li>
                     ))}
                   </ul>
@@ -115,12 +117,12 @@ export default function ProductDetailPage() {
               
               {product.materials && (
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4 border-b border-gray-100 pb-2">Cấu Tạo Bàn Chải</h3>
+                  <h3 className="text-xl font-bold text-gray-900 mb-4 border-b border-gray-100 pb-2">{t("Cấu Tạo Bàn Chải")}</h3>
                   <ul className="space-y-3">
                     {product.materials.map((mat, i) => (
                       <li key={i} className="flex text-gray-600 leading-relaxed items-start">
                         <div className="w-1.5 h-1.5 rounded-full bg-brand-400 mr-3 mt-2 shrink-0"></div>
-                        <span>{mat}</span>
+                        <span>{t(mat)}</span>
                       </li>
                     ))}
                   </ul>
@@ -130,7 +132,7 @@ export default function ProductDetailPage() {
             
             <div className="mt-12 pt-8 border-t border-gray-100">
               <button className="w-full sm:w-auto px-8 py-4 bg-brand-800 hover:bg-brand-900 text-white font-bold rounded-xl transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 flex items-center justify-center text-lg">
-                Nhận Tư Vấn Cho Sản Phẩm Này
+                {t("Nhận Tư Vấn Cho Sản Phẩm Này")}
               </button>
             </div>
           </div>
