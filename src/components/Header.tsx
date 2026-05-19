@@ -1,5 +1,5 @@
 import { Link, NavLink } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 import FuranoLogo from './FuranoLogo';
@@ -7,6 +7,8 @@ import FuranoLogo from './FuranoLogo';
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [langDropdownOpen, setLangDropdownOpen] = useState(false);
+  const [currentLang, setCurrentLang] = useState('VN');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,7 +60,44 @@ export default function Header() {
         </nav>
 
         {/* Actions */}
-        <div className="flex items-center gap-4 z-50">
+        <div className="flex items-center gap-2 md:gap-4 z-50">
+          {/* Language Switcher */}
+          <div className="relative">
+            <button 
+              onClick={() => setLangDropdownOpen(!langDropdownOpen)}
+              onBlur={() => setTimeout(() => setLangDropdownOpen(false), 200)}
+              className="flex items-center gap-1.5 px-3 py-2 text-sm font-semibold text-gray-700 bg-white/50 hover:bg-white rounded-full transition-colors shadow-sm"
+            >
+              <img 
+                src={currentLang === 'VN' ? "https://flagcdn.com/w20/vn.png" : "https://flagcdn.com/w20/gb.png"} 
+                alt={currentLang} 
+                className="w-5 h-auto rounded-sm"
+              />
+              <span className="hidden md:inline">{currentLang}</span>
+              <ChevronDown className={`w-4 h-4 transition-transform ${langDropdownOpen ? 'rotate-180' : ''}`} />
+            </button>
+
+            {/* Dropdown menu */}
+            {langDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-32 bg-white rounded-xl shadow-lg border border-gray-100 py-2 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2">
+                <button 
+                  className={`w-full flex items-center gap-3 px-4 py-2 text-sm text-left hover:bg-gray-50 transition-colors ${currentLang === 'VN' ? 'font-bold text-brand-800 bg-brand-50/50' : 'text-gray-700'}`}
+                  onClick={() => { setCurrentLang('VN'); setLangDropdownOpen(false); }}
+                >
+                  <img src="https://flagcdn.com/w20/vn.png" alt="VN" className="w-5 h-auto rounded-sm" />
+                  Tiếng Việt
+                </button>
+                <button 
+                  className={`w-full flex items-center gap-3 px-4 py-2 text-sm text-left hover:bg-gray-50 transition-colors ${currentLang === 'EN' ? 'font-bold text-brand-800 bg-brand-50/50' : 'text-gray-700'}`}
+                  onClick={() => { setCurrentLang('EN'); setLangDropdownOpen(false); }}
+                >
+                  <img src="https://flagcdn.com/w20/gb.png" alt="EN" className="w-5 h-auto rounded-sm" />
+                  English
+                </button>
+              </div>
+            )}
+          </div>
+
           <Link
             to="/products"
             className="hidden md:inline-flex items-center justify-center px-6 py-2.5 text-sm font-semibold text-white bg-brand-800 hover:bg-brand-700 rounded-full transition-colors shadow-md hover:shadow-lg"
