@@ -15,6 +15,7 @@ export type ProductDetail = {
   ingredients?: string[];
   specs?: string;
   description?: string;
+  tag?: string;
 };
 
 export type Category = {
@@ -35,6 +36,7 @@ export const categories: Category[] = [
       {
         id: 'kem-danh-rang-ortho-sabai',
         name: 'Kem đánh răng Ortho Sabai',
+        tag: 'Bán chạy',
         features: ['Tái khoáng hóa men răng', 'Kháng khuẩn CPC & Fluoride'],
         variants: [
           { name: 'Nha Đam', colorClass: 'bg-green-500', image: 'https://images.unsplash.com/photo-1559598467-f8b76c8105d0?auto=format&fit=crop&q=80&w=600&color=green' },
@@ -152,6 +154,7 @@ export const categories: Category[] = [
       {
         id: 'vien-sui-ve-sinh',
         name: 'Viên sủi vệ sinh',
+        tag: 'Bán chạy',
         features: ['Sạch vi khuẩn 99.9%', 'Duy trì độ trong suốt'],
         variants: [
           { name: 'Bạc Hà', colorClass: 'bg-blue-400', image: 'https://images.unsplash.com/photo-1584362917165-526a968579e8?auto=format&fit=crop&q=80&w=600&color=mint' },
@@ -176,6 +179,7 @@ export const categories: Category[] = [
       {
         id: 'kem-trang-rang-white-expert',
         name: 'White Expert',
+        tag: 'Bán chạy',
         features: ['Hạt mài mòn siêu mịn', 'Không mòn men', 'Sáng tự nhiên'],
         image: 'https://images.unsplash.com/photo-1559598467-f8b76c8105d0?auto=format&fit=crop&q=80&w=600',
         mainUses: [

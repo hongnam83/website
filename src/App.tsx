@@ -13,6 +13,7 @@ import ProductsPage from './pages/ProductsPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import BlogPage from './pages/BlogPage';
 import FAQPage from './pages/FAQPage';
+import FloatingContact from './components/FloatingContact';
 
 export default function App() {
   return (
@@ -30,6 +31,7 @@ export default function App() {
             <Route path="/faq" element={<FAQPage />} />
           </Routes>
         </div>
+        <FloatingContact />
         <Footer />
       </div>
     </Router>

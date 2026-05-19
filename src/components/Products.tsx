@@ -18,7 +18,12 @@ function ProductCard({ product }: { product: ProductDetail }) {
       transition={{ duration: 0.5 }}
       className="bg-white rounded-[1.5rem] p-4 border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 group flex flex-col h-full cursor-pointer h-[28rem]"
     >
-      <Link to={`/product/${product.id}`} className="block flex-grow flex flex-col h-full">
+      <Link to={`/product/${product.id}`} className="block flex-grow flex flex-col h-full relative">
+        {product.tag && (
+          <div className="absolute top-2 right-2 z-20 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+            {product.tag}
+          </div>
+        )}
         <div className="relative aspect-square rounded-[1rem] overflow-hidden bg-gray-50 mb-4 mix-blend-multiply flex-shrink-0">
           <img
             src={currentImage}
