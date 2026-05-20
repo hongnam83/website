@@ -73,3 +73,13 @@ body {
 .prose-brand ol {
   list-style-type: decimal;
 }
+.prose-brand hr {
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+  border-top-width: 2px;
+  border-color: var(--color-gray-100);
+}
+.prose-brand blockquote, .prose-brand strong:contains('Nguồn tham khảo') {
+  color: var(--color-gray-600);
+  font-style: italic;
+}
