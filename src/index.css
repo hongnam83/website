@@ -79,7 +79,7 @@ body {
   border-top-width: 2px;
   border-color: var(--color-gray-100);
 }
-.prose-brand blockquote, .prose-brand strong:contains('Nguồn tham khảo') {
+.prose-brand blockquote {
   color: var(--color-gray-600);
   font-style: italic;
 }

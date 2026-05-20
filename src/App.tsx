@@ -16,32 +16,38 @@ import BlogDetailPage from './pages/BlogDetailPage';
 import FAQPage from './pages/FAQPage';
 import FloatingContact from './components/FloatingContact';
 import { ShippingPolicyPage, ReturnPolicyPage, PrivacyPolicyPage, ShoppingGuidePage, OrderTrackingPage } from './pages/SupportPages';
+import AdminPage from './pages/AdminPage';
 
 export default function App() {
   return (
     <Router>
       <ScrollToTop />
-      <div className="min-h-screen bg-brand-50 selection:bg-brand-200 selection:text-brand-900 font-sans flex flex-col">
-        <Header />
-        <div className="flex-grow">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/products" element={<ProductsPage />} />
-            <Route path="/product/:id" element={<ProductDetailPage />} />
-            <Route path="/blog" element={<BlogPage />} />
-            <Route path="/blog/:id" element={<BlogDetailPage />} />
-            <Route path="/faq" element={<FAQPage />} />
-            <Route path="/shipping-policy" element={<ShippingPolicyPage />} />
-            <Route path="/return-policy" element={<ReturnPolicyPage />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-            <Route path="/shopping-guide" element={<ShoppingGuidePage />} />
-            <Route path="/order-tracking" element={<OrderTrackingPage />} />
-          </Routes>
-        </div>
-        <FloatingContact />
-        <Footer />
-      </div>
+      <Routes>
+        <Route path="/admin" element={<AdminPage />} />
+        <Route path="*" element={
+          <div className="min-h-screen bg-brand-50 selection:bg-brand-200 selection:text-brand-900 font-sans flex flex-col">
+            <Header />
+            <div className="flex-grow">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/products" element={<ProductsPage />} />
+                <Route path="/product/:id" element={<ProductDetailPage />} />
+                <Route path="/blog" element={<BlogPage />} />
+                <Route path="/blog/:id" element={<BlogDetailPage />} />
+                <Route path="/faq" element={<FAQPage />} />
+                <Route path="/shipping-policy" element={<ShippingPolicyPage />} />
+                <Route path="/return-policy" element={<ReturnPolicyPage />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+                <Route path="/shopping-guide" element={<ShoppingGuidePage />} />
+                <Route path="/order-tracking" element={<OrderTrackingPage />} />
+              </Routes>
+            </div>
+            <FloatingContact />
+            <Footer />
+          </div>
+        } />
+      </Routes>
     </Router>
   );
 }

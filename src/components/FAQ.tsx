@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronDown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -6,8 +6,20 @@ import { useTranslation } from 'react-i18next';
 export default function FAQ() {
   const { t } = useTranslation();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const [faqs, setFaqs] = useState<any[]>([]);
 
-  const faqs = [
+  useEffect(() => {
+    fetch('/api/faqs')
+      .then(res => res.json())
+      .then(data => {
+         if(data && data.length > 0) {
+            setFaqs(data);
+         }
+      })
+      .catch(err => console.error(err));
+  }, []);
+
+  const displayFaqs = faqs.length > 0 ? faqs : [
     {
       question: t("Sản phẩm FURANO có dùng được cho răng nhạy cảm không?"),
       answer: t("Hoàn toàn được. Công thức của chúng tôi không chứa chất mài mòn mạnh (low RDA), an toàn tuyệt đối cho men răng đang trong giai đoạn yếu ớt khi chịu quá trình kéo chỉnh của mắc cài.")
@@ -35,7 +47,7 @@ export default function FAQ() {
         </div>
 
         <div className="space-y-4">
-          {faqs.map((faq, index) => (
+          {displayFaqs.map((faq, index) => (
             <div 
               key={index} 
               className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
