@@ -1,6 +1,13 @@
-import { Facebook, Instagram, Youtube, Phone, Mail, MapPin } from 'lucide-react';
+import { Facebook, Instagram, Phone, Mail, MapPin } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import FuranoLogo from './FuranoLogo';
+
+const TiktokIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.01.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.12-3.44-3.17-3.61-5.66-.21-3.07 1.87-5.91 4.83-6.71 1.38-.37 2.83-.3 4.17.24v4.06c-1.04-.42-2.31-.38-3.23.27-1.14.77-1.51 2.39-.8 3.56.63 1.05 1.92 1.54 3.07 1.25 1.17-.28 1.95-1.28 2.05-2.48.06-3.79.03-7.59.04-11.38V.02z" />
+  </svg>
+);
 
 export default function Footer() {
   const { t } = useTranslation();
@@ -24,8 +31,8 @@ export default function Footer() {
               <a href="#" className="w-10 h-10 rounded-full bg-white hover:bg-brand-600 hover:text-white flex items-center justify-center transition-colors text-gray-500 shadow-sm">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-white hover:bg-brand-600 hover:text-white flex items-center justify-center transition-colors text-gray-500 shadow-sm">
-                <Youtube className="w-5 h-5" />
+              <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white hover:bg-brand-600 hover:text-white flex items-center justify-center transition-colors text-gray-500 shadow-sm">
+                <TiktokIcon className="w-5 h-5" />
               </a>
             </div>
           </div>
@@ -36,7 +43,7 @@ export default function Footer() {
             <ul className="space-y-4 text-sm">
               <li className="flex gap-3">
                 <MapPin className="w-5 h-5 text-gray-400 shrink-0" />
-                <span>{t("Số 123 Đường Nguyễn Trãi, Quận Thanh Xuân, Hà Nội, Việt Nam")}</span>
+                <span>{t("Chung cư Hoàng Dương, Số 50, Ngõ 83, đường Ngọc Hồi, Yên Sở, Hà Nội")}</span>
               </li>
               <li className="flex gap-3 items-center">
                 <Phone className="w-5 h-5 text-gray-400 shrink-0" />
@@ -53,11 +60,11 @@ export default function Footer() {
           <div>
             <h4 className="text-gray-900 font-bold mb-6 text-lg">{t("Hỗ Trợ Khách Hàng")}</h4>
             <ul className="space-y-3 text-sm flex flex-col">
-              <li><a href="#" className="hover:text-brand-800 transition-colors">{t("Chính sách vận chuyển")}</a></li>
-              <li><a href="#" className="hover:text-brand-800 transition-colors">{t("Chính sách đổi trả & hoàn tiền")}</a></li>
-              <li><a href="#" className="hover:text-brand-800 transition-colors">{t("Chính sách bảo mật thông tin")}</a></li>
-              <li><a href="#" className="hover:text-brand-800 transition-colors">{t("Hướng dẫn mua hàng")}</a></li>
-              <li><a href="#" className="hover:text-brand-800 transition-colors">{t("Tra cứu đơn hàng")}</a></li>
+              <li><Link to="/shipping-policy" className="hover:text-brand-800 transition-colors">{t("Chính sách vận chuyển")}</Link></li>
+              <li><Link to="/return-policy" className="hover:text-brand-800 transition-colors">{t("Chính sách đổi trả & hoàn tiền")}</Link></li>
+              <li><Link to="/privacy-policy" className="hover:text-brand-800 transition-colors">{t("Chính sách bảo mật thông tin")}</Link></li>
+              <li><Link to="/shopping-guide" className="hover:text-brand-800 transition-colors">{t("Hướng dẫn mua hàng")}</Link></li>
+              <li><Link to="/order-tracking" className="hover:text-brand-800 transition-colors">{t("Tra cứu đơn hàng")}</Link></li>
             </ul>
           </div>
 
@@ -65,11 +72,9 @@ export default function Footer() {
           <div>
             <h4 className="text-gray-900 font-bold mb-6 text-lg">{t("Sản Phẩm")}</h4>
             <ul className="space-y-3 text-sm flex flex-col">
-              <li><a href="#" className="hover:text-brand-800 transition-colors">{t("Kem đánh răng mắc cài")}</a></li>
-              <li><a href="#" className="hover:text-brand-800 transition-colors">{t("Viên sủi vệ sinh Invisalign")}</a></li>
-              <li><a href="#" className="hover:text-brand-800 transition-colors">{t("Nước súc miệng Cherry")}</a></li>
-              <li><a href="#" className="hover:text-brand-800 transition-colors">{t("Bàn chải kẽ chuyên dụng")}</a></li>
-              <li><a href="#" className="hover:text-brand-800 transition-colors">{t("Combo Siêu Tiết Kiệm")}</a></li>
+              <li><Link to="/products" className="hover:text-brand-800 transition-colors">{t("Chăm Sóc Khi Niềng")}</Link></li>
+              <li><Link to="/products" className="hover:text-brand-800 transition-colors">{t("Chăm Sóc Sau Niềng (Duy Trì)")}</Link></li>
+              <li><Link to="/products" className="hover:text-brand-800 transition-colors">{t("Trắng Răng & Khử Mùi")}</Link></li>
             </ul>
           </div>
 

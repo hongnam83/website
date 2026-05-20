@@ -15,6 +15,7 @@ import BlogPage from './pages/BlogPage';
 import BlogDetailPage from './pages/BlogDetailPage';
 import FAQPage from './pages/FAQPage';
 import FloatingContact from './components/FloatingContact';
+import { ShippingPolicyPage, ReturnPolicyPage, PrivacyPolicyPage, ShoppingGuidePage, OrderTrackingPage } from './pages/SupportPages';
 
 export default function App() {
   return (
@@ -31,6 +32,11 @@ export default function App() {
             <Route path="/blog" element={<BlogPage />} />
             <Route path="/blog/:id" element={<BlogDetailPage />} />
             <Route path="/faq" element={<FAQPage />} />
+            <Route path="/shipping-policy" element={<ShippingPolicyPage />} />
+            <Route path="/return-policy" element={<ReturnPolicyPage />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+            <Route path="/shopping-guide" element={<ShoppingGuidePage />} />
+            <Route path="/order-tracking" element={<OrderTrackingPage />} />
           </Routes>
         </div>
         <FloatingContact />
