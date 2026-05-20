@@ -3,14 +3,24 @@ import path from 'path';
 import cors from 'cors';
 import { createServer as createViteServer } from 'vite';
 import fs from 'fs';
-import { fileURLToPath } from 'url';
+const isProd = process.env.NODE_ENV === 'production';
+const DATA_DIR = isProd ? '/tmp/data_store' : path.join(process.cwd(), 'data_store');
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const DATA_DIR = path.join(__dirname, 'data_store');
 if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
+}
+
+if (isProd) {
+  const seedDir = path.join(process.cwd(), 'data_store');
+  if (fs.existsSync(seedDir)) {
+    const files = fs.readdirSync(seedDir);
+    for (const file of files) {
+      const targetPath = path.join(DATA_DIR, file);
+      if (!fs.existsSync(targetPath)) {
+        fs.copyFileSync(path.join(seedDir, file), targetPath);
+      }
+    }
+  }
 }
 
 // Check and initialize data store if blank
