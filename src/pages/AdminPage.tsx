@@ -598,6 +598,21 @@ const LoginScreen = ({ onLogin }: { onLogin: (user: User) => void }) => {
   );
 };
 
+const TabPanel = ({ active, children }: any) => {
+  const [hasRendered, setHasRendered] = useState(active);
+  useEffect(() => {
+    if (active && !hasRendered) setHasRendered(true);
+  }, [active, hasRendered]);
+
+  if (!hasRendered) return null;
+
+  return (
+    <div className={active ? 'block' : 'hidden'}>
+      {children}
+    </div>
+  );
+};
+
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState('Dashboard');
   const [user, setUser] = useState<User | null>(null);
@@ -625,11 +640,15 @@ export default function AdminPage() {
 
   return (
     <AdminLayout activeTab={activeTab} setActiveTab={setActiveTab} user={user} onLogout={handleLogout}>
-      {activeTab === 'Dashboard' && <DashboardView />}
+      <TabPanel active={activeTab === 'Dashboard'}>
+        <DashboardView />
+      </TabPanel>
       
-      {activeTab === 'Categories & Products' && <CategoriesProductsManager />}
+      <TabPanel active={activeTab === 'Categories & Products'}>
+        <CategoriesProductsManager />
+      </TabPanel>
       
-      {activeTab === 'Blog Posts' && 
+      <TabPanel active={activeTab === 'Blog Posts'}>
         <GenericCollectionManager title="Bài viết Blog" collectionName="blogPosts" fields={[
           { name: 'title', label: 'Tiêu đề', type: 'text' },
           { name: 'category', label: 'Chuyên mục', type: 'text' },
@@ -638,17 +657,22 @@ export default function AdminPage() {
           { name: 'excerpt', label: 'Mô tả ngắn', type: 'textarea' },
           { name: 'content', label: 'Nội dung (Hỗ trợ Markdown)', type: 'textarea' }
         ]} />
-      }
+      </TabPanel>
       
-      {activeTab === 'FAQs' && 
+      <TabPanel active={activeTab === 'FAQs'}>
         <GenericCollectionManager title="Câu Hỏi Thường Gặp" collectionName="faqs" fields={[
           { name: 'question', label: 'Câu hỏi', type: 'text' },
           { name: 'answer', label: 'Câu trả lời', type: 'textarea' }
         ]} />
-      }
+      </TabPanel>
 
-      {activeTab === 'Admin Users' && <AdminUsersManager />}
-      {activeTab === 'Site Settings' && <SiteSettingsManager />}
+      <TabPanel active={activeTab === 'Admin Users'}>
+        <AdminUsersManager />
+      </TabPanel>
+      
+      <TabPanel active={activeTab === 'Site Settings'}>
+        <SiteSettingsManager />
+      </TabPanel>
     </AdminLayout>
   );
 }
