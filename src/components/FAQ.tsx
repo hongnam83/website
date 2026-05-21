@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronDown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { db } from '../firebase';
-import { collection, getDocs } from 'firebase/firestore';
+import { db, collection, getDocs } from '../localDB';
 
 export default function FAQ() {
   const { t } = useTranslation();

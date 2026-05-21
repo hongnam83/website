@@ -3,8 +3,7 @@ import {ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import CTASection from '../components/CTASection';
 import { useTranslation } from 'react-i18next';
-import { db } from '../firebase';
-import { collection, getDocs } from 'firebase/firestore';
+import { db, collection, getDocs } from '../localDB';
 
 import { categories as defaultCategories } from '../data/products';
 

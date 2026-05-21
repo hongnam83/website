@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { db } from '../firebase';
-import { doc, getDoc } from 'firebase/firestore';
+import { db, doc, getDoc } from '../localDB';
 
 const SiteSettingsContext = createContext<any>({});
 

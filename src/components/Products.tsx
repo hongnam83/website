@@ -3,8 +3,7 @@ import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { db } from '../firebase';
-import { collection, getDocs } from 'firebase/firestore';
+import { db, collection, getDocs } from '../localDB';
 
 export interface ProductDetail {
   id: string;

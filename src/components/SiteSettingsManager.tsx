@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { db } from '../firebase';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { db, doc, getDoc, setDoc } from '../localDB';
 
 export default function SiteSettingsManager() {
   const [settings, setSettings] = useState<any>({});

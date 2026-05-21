@@ -4,8 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ArrowLeft, Clock, CalendarDays, Share2 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import CTASection from '../components/CTASection';
-import { db } from '../firebase';
-import { doc, getDoc } from 'firebase/firestore';
+import { db, doc, getDoc } from '../localDB';
 
 export default function BlogDetailPage() {
   const { id } = useParams();

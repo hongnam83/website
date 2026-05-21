@@ -1,9 +1,5 @@
 import { useState, useEffect } from 'react';
-import { db } from '../firebase';
-import { collection, getDocs, doc, setDoc, deleteDoc } from 'firebase/firestore';
-import { initializeApp } from 'firebase/app';
-import { getAuth, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
-import firebaseConfig from '../../firebase-applet-config.json';
+import { db, collection, getDocs, doc, setDoc, deleteDoc, signInWithEmailAndPassword, signOut } from '../localDB';
 import { Trash2, Plus, X } from 'lucide-react';
 
 export default function AdminUsersManager() {
@@ -33,13 +29,10 @@ export default function AdminUsersManager() {
   const handleCreate = async (e: any) => {
     e.preventDefault();
     setError('');
-    const secondaryApp = initializeApp(firebaseConfig, "Secondary");
-    const secondaryAuth = getAuth(secondaryApp);
     
     try {
-      const cred = await createUserWithEmailAndPassword(secondaryAuth, newEmail, newPassword);
-      await setDoc(doc(db, 'admins', cred.user.uid), { email: newEmail });
-      await signOut(secondaryAuth);
+      const id = Date.now().toString();
+      await setDoc(doc(db, 'admins', id), { email: newEmail });
       
       setNewEmail('');
       setNewPassword('');

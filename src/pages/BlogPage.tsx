@@ -3,8 +3,7 @@ import { motion } from 'motion/react';
 import { Clock, ArrowRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { db } from '../firebase';
-import { collection, getDocs } from 'firebase/firestore';
+import { db, collection, getDocs } from '../localDB';
 
 export default function BlogPage() {
   const { t } = useTranslation();

@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Pencil, Trash2, Plus, Image as ImageIcon, X, Database } from 'lucide-react';
-import { db, auth } from '../firebase';
-import { collection, getDocs, doc, setDoc, deleteDoc, writeBatch } from 'firebase/firestore';
-import { signInWithEmailAndPassword, signOut, sendPasswordResetEmail, createUserWithEmailAndPassword, onAuthStateChanged, User } from 'firebase/auth';
+import { db, auth, collection, getDocs, doc, setDoc, deleteDoc, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, createUserWithEmailAndPassword, onAuthStateChanged, User, writeBatch } from '../localDB';
 import { categories as defaultCategories } from '../data/products';
 import { blogPosts as defaultBlogPosts } from '../data/blogPosts';
 import AdminUsersManager from '../components/AdminUsersManager';
