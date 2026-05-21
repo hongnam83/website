@@ -6,6 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { db } from '../firebase';
 import { collection, getDocs } from 'firebase/firestore';
 
+import { categories as defaultCategories } from '../data/products';
+
 export default function ProductDetailPage() {
   const { id } = useParams();
   const { t } = useTranslation();
@@ -18,11 +20,15 @@ export default function ProductDetailPage() {
       try {
         setLoading(true);
         const snap = await getDocs(collection(db, 'products'));
-        const allCategories = snap.docs.map(doc => doc.data());
+        let allCategories = snap.docs.map(doc => doc.data());
+        if (allCategories.length === 0) {
+          allCategories = defaultCategories;
+        }
         const found = allCategories.flatMap(cat => cat.products || []).find((p: any) => p.id === id);
         setProduct(found || null);
       } catch (err) {
-        // console.warn('Firebase fetch failed:', err);
+        const found = defaultCategories.flatMap(cat => cat.products || []).find((p: any) => p.id === id);
+        setProduct(found || null);
       } finally {
         setLoading(false);
       }

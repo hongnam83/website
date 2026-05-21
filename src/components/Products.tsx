@@ -94,6 +94,8 @@ function ProductCard({ product }: { product: ProductDetail }) {
   );
 }
 
+import { categories as defaultCategories } from '../data/products';
+
 export default function Products() {
   const { t } = useTranslation();
   const [categories, setCategories] = useState<any[]>([]);
@@ -102,9 +104,13 @@ export default function Products() {
     const fetchCats = async () => {
       try {
         const snap = await getDocs(collection(db, 'products'));
-        setCategories(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        let fetchedCategories = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        if (fetchedCategories.length === 0) {
+          fetchedCategories = defaultCategories;
+        }
+        setCategories(fetchedCategories);
       } catch (e) {
-        // console.warn('Firebase fetch failed:', e);
+        setCategories(defaultCategories);
       }
     };
     fetchCats();
