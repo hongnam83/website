@@ -25,10 +25,12 @@ export const doc = (db: any, path: string, id?: string) => {
 
 import { categories } from './data/products';
 import { blogPosts } from './data/blogPosts';
+import { faqs } from './data/faqs';
 
 const seedData: any = {
   products: categories,
   blogPosts: blogPosts,
+  faqs: faqs,
   admins: [{ id: '1', email: 'sonnt.credit@gmail.com' }]
 };
 
