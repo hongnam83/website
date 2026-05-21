@@ -1,9 +1,11 @@
 import { motion } from 'motion/react';
 import { ArrowRight, Star, ShieldCheck } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useSiteSettings } from '../contexts/SiteSettingsContext';
 
 export default function Hero() {
   const { t } = useTranslation();
+  const settings = useSiteSettings();
 
   return (
     <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-brand-50" id="home">
@@ -93,7 +95,7 @@ export default function Hero() {
           >
             <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl aspect-[4/5] sm:aspect-square lg:aspect-[4/5] bg-white border border-gray-100">
               <img
-                src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&q=80&w=800"
+                src={settings.homeHeroImage || "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&q=80&w=800"}
                 alt="Cô gái niềng răng tự tin mỉm cười"
                 className="w-full h-full object-cover"
               />

@@ -1,16 +1,51 @@
 import { useParams, Link } from 'react-router-dom';
 import {ArrowLeft, CheckCircle2 } from 'lucide-react';
-import { categories } from '../data/products';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import CTASection from '../components/CTASection';
 import { useTranslation } from 'react-i18next';
+import { db } from '../firebase';
+import { collection, getDocs } from 'firebase/firestore';
 
 export default function ProductDetailPage() {
   const { id } = useParams();
   const { t } = useTranslation();
   
-  // Find product across all categories
-  const product = categories.flatMap(cat => cat.products).find(p => p.id === id);
+  const [product, setProduct] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        setLoading(true);
+        const snap = await getDocs(collection(db, 'products'));
+        const allCategories = snap.docs.map(doc => doc.data());
+        const found = allCategories.flatMap(cat => cat.products || []).find((p: any) => p.id === id);
+        setProduct(found || null);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProduct();
+    window.scrollTo(0, 0);
+  }, [id]);
+
+  const hasVariants = product?.variants && product.variants.length > 0;
+  const [selectedVariant, setSelectedVariant] = useState(0);
+
+  // set default variant if loaded
+  useEffect(() => {
+     if(product?.variants && product.variants.length > 0) {
+        setSelectedVariant(0);
+     } else {
+        setSelectedVariant(-1);
+     }
+  }, [product]);
+
+  if (loading) {
+     return <div className="min-h-screen pt-32 px-4 text-center">{t("Đang tải...")}</div>;
+  }
 
   if (!product) {
     return (
@@ -23,10 +58,7 @@ export default function ProductDetailPage() {
     );
   }
 
-  const hasVariants = product.variants && product.variants.length > 0;
-  const [selectedVariant, setSelectedVariant] = useState(hasVariants ? 0 : -1);
-
-  const currentImage = hasVariants && product.variants ? product.variants[selectedVariant].image : product.image;
+  const currentImage = hasVariants && product.variants ? product.variants[selectedVariant]?.image : product.image;
 
   return (
     <main className="pt-24 min-h-screen bg-gray-50 flex flex-col">

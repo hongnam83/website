@@ -1,27 +1,29 @@
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
+import { useSiteSettings } from '../contexts/SiteSettingsContext';
 
 export default function Routine() {
   const { t } = useTranslation();
+  const settings = useSiteSettings();
 
   const steps = [
     {
       num: "01",
       title: t("Chải Sạch Mảng Bám"),
       desc: t("Sử dụng bàn chải rãnh V/chữ U cùng Kem Đánh Răng FURANO 7 Benefits đánh bay thức ăn thừa quang mắc cài."),
-      img: "https://images.unsplash.com/photo-1597848212624-a19eb35e2651?auto=format&fit=crop&q=80&w=500"
+      img: settings?.routineStep1Image || "https://images.unsplash.com/photo-1597848212624-a19eb35e2651?auto=format&fit=crop&q=80&w=500"
     },
     {
       num: "02",
       title: t("Làm Sạch Kẽ Răng"),
       desc: t("Dùng bàn chải kẽ chuyên dụng len lỏi qua dây cung, lấy đi mảng bám mỏng nhất mà bàn chải thường không chạm tới."),
-      img: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&q=80&w=500"
+      img: settings?.routineStep2Image || "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&q=80&w=500"
     },
     {
       num: "03",
       title: t("Bảo Vệ Xuyên Suốt"),
       desc: t("Kết thúc bằng Nước súc miệng Cherry Fresh. Tiêu diệt vi khuẩn, mang lại hơi thở thơm mát và củng cố men răng cả ngày dài."),
-      img: "https://images.unsplash.com/photo-1559598467-f8b76c8105d0?auto=format&fit=crop&q=80&w=500"
+      img: settings?.routineStep3Image || "https://images.unsplash.com/photo-1559598467-f8b76c8105d0?auto=format&fit=crop&q=80&w=500"
     }
   ];
 

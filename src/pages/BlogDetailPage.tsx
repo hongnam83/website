@@ -1,15 +1,41 @@
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, Clock, CalendarDays, Share2 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
-import { blogPosts } from '../data/blogPosts';
 import CTASection from '../components/CTASection';
+import { db } from '../firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
 export default function BlogDetailPage() {
   const { id } = useParams();
   const { t } = useTranslation();
   
-  const post = blogPosts.find(p => p.id === id);
+  const [post, setPost] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      if (!id) return;
+      try {
+         setLoading(true);
+         const docSnap = await getDoc(doc(db, 'blogPosts', id));
+         if (docSnap.exists()) {
+           setPost({ id: docSnap.id, ...docSnap.data() });
+         }
+      } catch (err) {
+         console.error(err);
+      } finally {
+         setLoading(false);
+      }
+    };
+    fetchPost();
+    window.scrollTo(0, 0);
+  }, [id]);
+
+  if (loading) {
+     return <div className="min-h-screen pt-32 px-4 text-center">{t("Đang tải...")}</div>;
+  }
   
   if (!post) {
     return (

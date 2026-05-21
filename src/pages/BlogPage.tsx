@@ -1,13 +1,28 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Clock, ArrowRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { blogPosts } from '../data/blogPosts';
+import { db } from '../firebase';
+import { collection, getDocs } from 'firebase/firestore';
 
 export default function BlogPage() {
   const { t } = useTranslation();
   const [visibleCount, setVisibleCount] = useState(12);
+  const [blogPosts, setBlogPosts] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const snapshot = await getDocs(collection(db, 'blogPosts'));
+        const posts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setBlogPosts(posts);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchPosts();
+  }, []);
 
   const loadMore = () => {
     setVisibleCount(prev => Math.min(prev + 12, blogPosts.length));

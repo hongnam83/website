@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronDown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { db } from '../firebase';
+import { collection, getDocs } from 'firebase/firestore';
 
 export default function FAQ() {
   const { t } = useTranslation();
@@ -9,14 +11,18 @@ export default function FAQ() {
   const [faqs, setFaqs] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch('/api/faqs')
-      .then(res => res.json())
-      .then(data => {
-         if(data && data.length > 0) {
-            setFaqs(data);
-         }
-      })
-      .catch(err => console.error(err));
+    const fetchFaqs = async () => {
+      try {
+        const snapshot = await getDocs(collection(db, 'faqs'));
+        const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        if (data.length > 0) {
+          setFaqs(data);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchFaqs();
   }, []);
 
   const displayFaqs = faqs.length > 0 ? faqs : [

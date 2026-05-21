@@ -1,28 +1,54 @@
 import { useState, useEffect } from 'react';
-import { Pencil, Trash2, Plus, Image as ImageIcon, X } from 'lucide-react';
+import { Pencil, Trash2, Plus, Image as ImageIcon, X, Database } from 'lucide-react';
+import { db, auth } from '../firebase';
+import { collection, getDocs, doc, setDoc, deleteDoc, writeBatch } from 'firebase/firestore';
+import { signInWithEmailAndPassword, signOut, sendPasswordResetEmail, createUserWithEmailAndPassword, onAuthStateChanged, User } from 'firebase/auth';
+import { categories as defaultCategories } from '../data/products';
+import { blogPosts as defaultBlogPosts } from '../data/blogPosts';
+import AdminUsersManager from '../components/AdminUsersManager';
+import SiteSettingsManager from '../components/SiteSettingsManager';
 
-const AdminLayout = ({ children, activeTab, setActiveTab }: any) => {
+const AdminLayout = ({ children, activeTab, setActiveTab, user, onLogout }: any) => {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col md:flex-row">
       {/* Sidebar */}
-      <div className="w-full md:w-64 bg-gray-900 text-white flex-shrink-0">
-        <div className="p-6">
-          <h2 className="text-2xl font-bold text-brand-400">Furano Admin</h2>
+      <div className="w-full md:w-64 bg-gray-900 text-white flex-shrink-0 flex flex-col justify-between">
+        <div>
+          <div className="p-6">
+            <h2 className="text-2xl font-bold text-brand-400">Furano Admin</h2>
+          </div>
+          <nav className="mt-4">
+            {['Dashboard', 'Site Settings', 'Categories & Products', 'Blog Posts', 'FAQs', 'Admin Users'].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`w-full text-left px-6 py-3 hover:bg-gray-800 transition-colors ${activeTab === tab ? 'bg-gray-800 border-l-4 border-brand-500' : ''}`}
+              >
+                {tab === 'Dashboard' && 'Dashboard'}
+                {tab === 'Site Settings' && 'Hình ảnh chung'}
+                {tab === 'Categories & Products' && 'Danh mục & Sản phẩm'}
+                {tab === 'Blog Posts' && 'Bài viết Blog'}
+                {tab === 'FAQs' && 'Hỏi Đáp (FAQs)'}
+                {tab === 'Admin Users' && 'Thành viên Quản trị'}
+              </button>
+            ))}
+            <a href="/" className="block mt-12 px-6 text-sm text-gray-400 hover:text-white">
+              ← Trở về trang web
+            </a>
+          </nav>
         </div>
-        <nav className="mt-4">
-          {['Dashboard', 'Categories & Products', 'Blog Posts', 'FAQs'].map((tab) => (
+        
+        {user && (
+          <div className="p-6 border-t border-gray-800">
+            <div className="text-xs text-gray-400 mb-2 truncate">{user.email}</div>
             <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`w-full text-left px-6 py-3 hover:bg-gray-800 transition-colors ${activeTab === tab ? 'bg-gray-800 border-l-4 border-brand-500' : ''}`}
+              onClick={onLogout}
+              className="w-full px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded text-sm transition-colors text-left"
             >
-              {tab}
+              Đăng xuất
             </button>
-          ))}
-          <a href="/" className="block mt-12 px-6 text-sm text-gray-400 hover:text-white">
-            ← Back to Website
-          </a>
-        </nav>
+          </div>
+        )}
       </div>
 
       {/* Main Content */}
@@ -35,12 +61,66 @@ const AdminLayout = ({ children, activeTab, setActiveTab }: any) => {
   );
 };
 
-const DashboardView = () => (
-  <div>
-    <h2 className="text-2xl font-bold mb-4">Dashboard</h2>
-    <p>Welcome to the Furano admin panel. Select a category from the sidebar to manage content.</p>
-  </div>
-);
+const DashboardView = () => {
+  const [isSeeding, setIsSeeding] = useState(false);
+
+  const handleSeed = async () => {
+    if (!confirm('Khởi tạo lại cơ sở dữ liệu mẫu? (Chỉ thêm nếu thiếu)')) return;
+    setIsSeeding(true);
+    try {
+      // Products (categories)
+      const batch1 = writeBatch(db);
+      for (const cat of defaultCategories) {
+        batch1.set(doc(db, 'products', cat.id), cat, { merge: true });
+      }
+      await batch1.commit();
+
+      // Blogs
+      const batch2 = writeBatch(db);
+      for (const post of defaultBlogPosts) {
+        batch2.set(doc(db, 'blogPosts', post.id), post, { merge: true });
+      }
+      await batch2.commit();
+
+      // FAQs
+      const batch3 = writeBatch(db);
+      const defaultFaqs = [
+        { id: "1", question: "Sản phẩm FURANO có dùng được cho răng nhạy cảm không?", answer: "Hoàn toàn được. Công thức không chứa chất mài mòn mạnh (low RDA)." },
+        { id: "2", question: "Bao nhiêu lâu thì nên thay đổi bàn chải kẽ?", answer: "Với người đang niềng răng, nha sĩ khuyên nên làm vệ sinh bàn chải sau mỗi lần sử dụng..." },
+      ];
+      for (const f of defaultFaqs) {
+        batch3.set(doc(db, 'faqs', f.id), f, { merge: true });
+      }
+      await batch3.commit();
+      
+      alert('Đã khởi tạo xong cơ sở dữ liệu mẫu!');
+    } catch(e) {
+      console.error(e);
+      alert('Lỗi khởi tạo!');
+    } finally {
+      setIsSeeding(false);
+    }
+  };
+
+  return (
+    <div>
+      <h2 className="text-2xl font-bold mb-4">Dashboard</h2>
+      <p className="mb-6">Chào mừng đến với trang quản trị Furano. Vui lòng chọn danh mục bên trái.</p>
+      
+      <div className="p-6 bg-blue-50 border border-blue-100 rounded-xl max-w-lg">
+         <h3 className="text-blue-900 font-bold mb-2 flex items-center gap-2">
+            <Database className="w-5 h-5"/> Khởi tạo dữ liệu
+         </h3>
+         <p className="text-blue-800 text-sm mb-4">
+           Nhấn nút dưới đây để mồi (seed) dữ liệu tĩnh ban đầu vào cơ sở dữ liệu Firebase. Giúp bạn dễ dàng chỉnh sửa mà không cần nhập lại từ đầu.
+         </p>
+         <button onClick={handleSeed} disabled={isSeeding} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50">
+           {isSeeding ? 'Đang chạy...' : 'Khởi tạo Dữ liệu Mẫu'}
+         </button>
+      </div>
+    </div>
+  );
+};
 
 // Generic Edit Modal component
 const ItemModal = ({ item, fields, onSave, onClose, isProduct = false }: any) => {
@@ -135,7 +215,7 @@ const ItemModal = ({ item, fields, onSave, onClose, isProduct = false }: any) =>
   );
 };
 
-const GenericCollectionManager = ({ title, collection, fields }: any) => {
+const GenericCollectionManager = ({ title, collectionName, fields }: any) => {
   const [items, setItems] = useState<any[]>([]);
   const [editingItem, setEditingItem] = useState<any>(null);
   const [isCreating, setIsCreating] = useState(false);
@@ -143,13 +223,13 @@ const GenericCollectionManager = ({ title, collection, fields }: any) => {
 
   useEffect(() => {
     fetchItems();
-  }, [collection]);
+  }, [collectionName]);
 
   const fetchItems = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`/api/${collection}`);
-      const data = await res.json();
+      const snapshot = await getDocs(collection(db, collectionName));
+      const data = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
       setItems(data);
     } catch(e) {
       console.error(e);
@@ -161,17 +241,10 @@ const GenericCollectionManager = ({ title, collection, fields }: any) => {
   const handleSave = async (data: any) => {
     try {
       if (editingItem) {
-        await fetch(`/api/${collection}/${editingItem.id}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
-        });
+        await setDoc(doc(db, collectionName, editingItem.id), data, { merge: true });
       } else {
-        await fetch(`/api/${collection}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ...data, id: data.id || Date.now().toString() })
-        });
+        const newId = data.id || Date.now().toString();
+        await setDoc(doc(db, collectionName, newId), { ...data, id: newId });
       }
       setEditingItem(null);
       setIsCreating(false);
@@ -184,7 +257,7 @@ const GenericCollectionManager = ({ title, collection, fields }: any) => {
   const handleDelete = async (id: string) => {
     if (!confirm('Bạn có chắc chắn muốn xóa?')) return;
     try {
-      await fetch(`/api/${collection}/${id}`, { method: 'DELETE' });
+      await deleteDoc(doc(db, collectionName, id));
       fetchItems();
     } catch(e) {
       console.error(e);
@@ -263,8 +336,8 @@ const CategoriesProductsManager = () => {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`/api/products`); // 'products' collection is actually categories in backend format
-      const data = await res.json();
+      const snapshot = await getDocs(collection(db, 'products'));
+      const data = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
       setCategories(data);
     } catch(e) {
       console.error(e);
@@ -276,17 +349,10 @@ const CategoriesProductsManager = () => {
   const handleSaveCategory = async (catData: any) => {
     try {
       if (editingCategory?.id) {
-         await fetch(`/api/products/${editingCategory.id}`, {
-           method: 'PUT',
-           headers: { 'Content-Type': 'application/json' },
-           body: JSON.stringify(catData)
-         });
+         await setDoc(doc(db, 'products', editingCategory.id), catData, { merge: true });
       } else {
-         await fetch(`/api/products`, {
-           method: 'POST',
-           headers: { 'Content-Type': 'application/json' },
-           body: JSON.stringify({...catData, id: catData.id || Date.now().toString(), products: catData.products || []})
-         });
+         const newId = catData.id || Date.now().toString();
+         await setDoc(doc(db, 'products', newId), {...catData, id: newId, products: catData.products || []});
       }
       setEditingCategory(null);
       fetchCategories();
@@ -297,7 +363,7 @@ const CategoriesProductsManager = () => {
 
   const handleDeleteCategory = async (id: string) => {
     if(!confirm("Xóa danh mục này sẽ xóa toàn bộ sản phẩm bên trong. Tiếp tục?")) return;
-    await fetch(`/api/products/${id}`, { method: 'DELETE' });
+    await deleteDoc(doc(db, 'products', id));
     if(selectedCategoryIndex !== null && categories[selectedCategoryIndex]?.id === id) {
       setSelectedCategoryIndex(null);
     }
@@ -316,11 +382,7 @@ const CategoriesProductsManager = () => {
     }
 
     try {
-      await fetch(`/api/products/${cat.id}`, {
-           method: 'PUT',
-           headers: { 'Content-Type': 'application/json' },
-           body: JSON.stringify(cat)
-      });
+      await setDoc(doc(db, 'products', cat.id), cat, { merge: true });
       setEditingProduct(null);
       fetchCategories();
     } catch(e) {
@@ -335,11 +397,7 @@ const CategoriesProductsManager = () => {
      cat.products = cat.products.filter((p: any) => p.id !== prodId);
 
      try {
-       await fetch(`/api/products/${cat.id}`, {
-           method: 'PUT',
-           headers: { 'Content-Type': 'application/json' },
-           body: JSON.stringify(cat)
-       });
+       await setDoc(doc(db, 'products', cat.id), cat, { merge: true });
        fetchCategories();
      } catch(e) {
        console.error(e);
@@ -449,17 +507,130 @@ const CategoriesProductsManager = () => {
   );
 };
 
-export default function AdminPage() {
-  const [activeTab, setActiveTab] = useState('Dashboard');
+const LoginScreen = ({ onLogin }: { onLogin: (user: User) => void }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [isReset, setIsReset] = useState(false);
+
+  const handleAuth = async (e: any) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+    try {
+      if (isReset) {
+        await sendPasswordResetEmail(auth, email);
+        alert('Đã gửi email khôi phục mật khẩu. Vui lòng kiểm tra hộp thư của bạn.');
+        setIsReset(false);
+      } else {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        onLogin(userCredential.user);
+      }
+    } catch (err: any) {
+      setError(err.message || 'Đã có lỗi xảy ra.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <AdminLayout activeTab={activeTab} setActiveTab={setActiveTab}>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-lg border border-gray-100">
+        <div>
+          <h2 className="text-center text-3xl font-extrabold text-gray-900">
+            {isReset ? 'Khôi phục mật khẩu' : 'Đăng nhập Quản trị'}
+          </h2>
+        </div>
+        <form className="mt-8 space-y-6" onSubmit={handleAuth}>
+          {error && <div className="text-red-500 text-sm text-center bg-red-50 p-3 rounded-lg">{error}</div>}
+          <div className="rounded-md shadow-sm -space-y-px">
+            <div>
+              <label htmlFor="email-address" className="sr-only">Địa chỉ email</label>
+              <input
+                id="email-address"
+                name="email"
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-brand-500 focus:border-brand-500 focus:z-10 sm:text-sm"
+                placeholder="Địa chỉ Email"
+              />
+            </div>
+            {!isReset && (
+              <div>
+                <label htmlFor="password" className="sr-only">Mật khẩu</label>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-brand-500 focus:border-brand-500 focus:z-10 sm:text-sm"
+                  placeholder="Mật khẩu"
+                />
+              </div>
+            )}
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="text-sm space-x-4">
+              <button type="button" onClick={() => setIsReset(!isReset)} className="font-medium text-brand-600 hover:text-brand-500">
+                {isReset ? 'Quay lại đăng nhập' : 'Quên mật khẩu?'}
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-600 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 disabled:opacity-50"
+            >
+              {loading ? 'Đang xử lý...' : (isReset ? 'Gửi email khôi phục' : 'Đăng nhập')}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default function AdminPage() {
+  const [activeTab, setActiveTab] = useState('Dashboard');
+  const [user, setUser] = useState<User | null>(null);
+  const [authLoading, setAuthLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setAuthLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const handleLogout = async () => {
+    await signOut(auth);
+  };
+
+  if (authLoading) {
+    return <div className="min-h-screen flex items-center justify-center">Đang kiểm tra đăng nhập...</div>;
+  }
+
+  if (!user) {
+    return <LoginScreen onLogin={setUser} />;
+  }
+
+  return (
+    <AdminLayout activeTab={activeTab} setActiveTab={setActiveTab} user={user} onLogout={handleLogout}>
       {activeTab === 'Dashboard' && <DashboardView />}
       
       {activeTab === 'Categories & Products' && <CategoriesProductsManager />}
       
       {activeTab === 'Blog Posts' && 
-        <GenericCollectionManager title="Bài viết Blog" collection="blogPosts" fields={[
+        <GenericCollectionManager title="Bài viết Blog" collectionName="blogPosts" fields={[
           { name: 'title', label: 'Tiêu đề', type: 'text' },
           { name: 'category', label: 'Chuyên mục', type: 'text' },
           { name: 'date', label: 'Ngày tháng (VD: 24 Thg 05, 2024)', type: 'text' },
@@ -470,11 +641,14 @@ export default function AdminPage() {
       }
       
       {activeTab === 'FAQs' && 
-        <GenericCollectionManager title="Câu Hỏi Thường Gặp" collection="faqs" fields={[
+        <GenericCollectionManager title="Câu Hỏi Thường Gặp" collectionName="faqs" fields={[
           { name: 'question', label: 'Câu hỏi', type: 'text' },
           { name: 'answer', label: 'Câu trả lời', type: 'textarea' }
         ]} />
       }
+
+      {activeTab === 'Admin Users' && <AdminUsersManager />}
+      {activeTab === 'Site Settings' && <SiteSettingsManager />}
     </AdminLayout>
   );
 }

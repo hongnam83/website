@@ -1,9 +1,27 @@
 import { motion } from 'motion/react';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { categories, ProductDetail } from '../data/products';
+import { db } from '../firebase';
+import { collection, getDocs } from 'firebase/firestore';
+
+export interface ProductDetail {
+  id: string;
+  name: string;
+  tag?: string;
+  image: string;
+  features: string[];
+  mainUses: string[];
+  specs?: string;
+  ingredients?: string[];
+  materials?: string[];
+  variants?: {
+    name: string;
+    image: string;
+    colorClass: string;
+  }[];
+}
 
 function ProductCard({ product }: { product: ProductDetail }) {
   const { t } = useTranslation();
@@ -59,7 +77,7 @@ function ProductCard({ product }: { product: ProductDetail }) {
         <div className="flex-grow flex flex-col justify-end">
           <h5 className="text-lg font-bold text-gray-900 mb-2 truncate">{t(product.name)}</h5>
           <ul className="space-y-1 mb-4">
-            {product.features.map((feature, fIndex) => (
+            {product.features?.slice(0, 2).map((feature, fIndex) => (
               <li key={fIndex} className="flex items-start text-sm text-gray-600">
                 <CheckCircle2 className="w-4 h-4 text-brand-500 mr-2 shrink-0 mt-0.5" />
                 <span className="leading-tight line-clamp-1">{t(feature)}</span>
@@ -78,6 +96,19 @@ function ProductCard({ product }: { product: ProductDetail }) {
 
 export default function Products() {
   const { t } = useTranslation();
+  const [categories, setCategories] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchCats = async () => {
+      try {
+        const snap = await getDocs(collection(db, 'products'));
+        setCategories(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchCats();
+  }, []);
   return (
     <section className="py-24 bg-gray-50" id="products">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
