@@ -15,7 +15,7 @@ export const SiteSettingsProvider = ({ children }: { children: React.ReactNode }
           setSettings(snap.data());
         }
       } catch (err) {
-        console.error(err);
+        // console.warn('Firebase fetch failed:', err);
       }
     };
     fetchSettings();

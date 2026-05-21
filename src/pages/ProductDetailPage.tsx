@@ -22,7 +22,7 @@ export default function ProductDetailPage() {
         const found = allCategories.flatMap(cat => cat.products || []).find((p: any) => p.id === id);
         setProduct(found || null);
       } catch (err) {
-        console.error(err);
+        // console.warn('Firebase fetch failed:', err);
       } finally {
         setLoading(false);
       }

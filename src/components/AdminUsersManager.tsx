@@ -20,7 +20,7 @@ export default function AdminUsersManager() {
       const snapshot = await getDocs(collection(db, 'admins'));
       setUsers(snapshot.docs.map(d => ({ id: d.id, ...d.data() })));
     } catch(e) {
-      console.error(e);
+      // console.error(e);
     } finally {
       setLoading(false);
     }
@@ -57,7 +57,7 @@ export default function AdminUsersManager() {
       await deleteDoc(doc(db, 'admins', id));
       fetchUsers();
     } catch (e) {
-      console.error(e);
+      // console.error(e);
       alert("Không có quyền phục hồi/xóa");
     }
   };

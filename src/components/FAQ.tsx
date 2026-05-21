@@ -19,7 +19,7 @@ export default function FAQ() {
           setFaqs(data);
         }
       } catch (err) {
-        console.error(err);
+        // console.warn('Firebase fetch failed:', err);
       }
     };
     fetchFaqs();

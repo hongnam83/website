@@ -15,7 +15,7 @@ export default function SiteSettingsManager() {
           setSettings(snap.data());
         }
       } catch (err) {
-        console.error(err);
+        // console.error(err);
       } finally {
         setLoading(false);
       }
@@ -33,7 +33,7 @@ export default function SiteSettingsManager() {
       await setDoc(doc(db, 'settings', 'general'), settings, { merge: true });
       alert("Đã lưu cài đặt chung!");
     } catch (e) {
-      console.error(e);
+      // console.error(e);
       alert("Lỗi khi lưu");
     } finally {
       setSaving(false);

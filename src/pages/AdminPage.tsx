@@ -95,7 +95,7 @@ const DashboardView = () => {
       
       alert('Đã khởi tạo xong cơ sở dữ liệu mẫu!');
     } catch(e) {
-      console.error(e);
+      // console.error(e);
       alert('Lỗi khởi tạo!');
     } finally {
       setIsSeeding(false);
@@ -232,7 +232,7 @@ const GenericCollectionManager = ({ title, collectionName, fields }: any) => {
       const data = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
       setItems(data);
     } catch(e) {
-      console.error(e);
+      // console.error(e);
     } finally {
       setLoading(false);
     }
@@ -250,7 +250,7 @@ const GenericCollectionManager = ({ title, collectionName, fields }: any) => {
       setIsCreating(false);
       fetchItems();
     } catch(e) {
-      console.error(e);
+      // console.error(e);
     }
   };
 
@@ -260,7 +260,7 @@ const GenericCollectionManager = ({ title, collectionName, fields }: any) => {
       await deleteDoc(doc(db, collectionName, id));
       fetchItems();
     } catch(e) {
-      console.error(e);
+      // console.error(e);
     }
   };
 
@@ -340,7 +340,7 @@ const CategoriesProductsManager = () => {
       const data = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
       setCategories(data);
     } catch(e) {
-      console.error(e);
+      // console.error(e);
     } finally {
       setLoading(false);
     }
@@ -357,7 +357,7 @@ const CategoriesProductsManager = () => {
       setEditingCategory(null);
       fetchCategories();
     } catch(e) {
-       console.error(e);
+       // console.error(e);
     }
   };
 
@@ -386,7 +386,7 @@ const CategoriesProductsManager = () => {
       setEditingProduct(null);
       fetchCategories();
     } catch(e) {
-      console.error(e);
+      // console.error(e);
     }
   };
 
@@ -400,7 +400,7 @@ const CategoriesProductsManager = () => {
        await setDoc(doc(db, 'products', cat.id), cat, { merge: true });
        fetchCategories();
      } catch(e) {
-       console.error(e);
+       // console.error(e);
      }
   }
 

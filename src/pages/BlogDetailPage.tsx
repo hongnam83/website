@@ -24,7 +24,7 @@ export default function BlogDetailPage() {
            setPost({ id: docSnap.id, ...docSnap.data() });
          }
       } catch (err) {
-         console.error(err);
+         // console.warn('Firebase fetch failed:', err);
       } finally {
          setLoading(false);
       }

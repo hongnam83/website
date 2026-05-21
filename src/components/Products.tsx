@@ -104,7 +104,7 @@ export default function Products() {
         const snap = await getDocs(collection(db, 'products'));
         setCategories(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
       } catch (e) {
-        console.error(e);
+        // console.warn('Firebase fetch failed:', e);
       }
     };
     fetchCats();

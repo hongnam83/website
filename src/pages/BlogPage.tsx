@@ -18,7 +18,7 @@ export default function BlogPage() {
         const posts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setBlogPosts(posts);
       } catch (err) {
-        console.error(err);
+        // console.warn('Firebase fetch failed:', err);
       }
     };
     fetchPosts();
