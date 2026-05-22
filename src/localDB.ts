@@ -23,6 +23,8 @@ export const doc = (db: any, path: string, id?: string) => {
   return { path, id: id || Math.random().toString(36).substring(7) };
 };
 
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 import { categories } from './data/products';
 import { blogPosts } from './data/blogPosts';
 import { faqs } from './data/faqs';
@@ -35,6 +37,7 @@ const seedData: any = {
 };
 
 export const getDocs = async (collectionRef: any) => {
+  await delay(300);
   let dataStr = localStorage.getItem(`db_${collectionRef.path}`);
   if (!dataStr && seedData[collectionRef.path]) {
     dataStr = JSON.stringify(seedData[collectionRef.path]);
@@ -50,6 +53,7 @@ export const getDocs = async (collectionRef: any) => {
 };
 
 export const getDoc = async (docRef: any) => {
+  await delay(300);
   let dataStr = localStorage.getItem(`db_${docRef.path}`);
   if (!dataStr && seedData[docRef.path]) {
     dataStr = JSON.stringify(seedData[docRef.path]);
@@ -64,6 +68,7 @@ export const getDoc = async (docRef: any) => {
 };
 
 export const setDoc = async (docRef: any, data: any, options?: any) => {
+  await delay(300);
   let list = JSON.parse(localStorage.getItem(`db_${docRef.path}`) || '[]');
   const index = list.findIndex((i: any) => i.id === docRef.id);
   if (index >= 0) {
@@ -79,6 +84,7 @@ export const setDoc = async (docRef: any, data: any, options?: any) => {
 };
 
 export const deleteDoc = async (docRef: any) => {
+  await delay(300);
   let list = JSON.parse(localStorage.getItem(`db_${docRef.path}`) || '[]');
   list = list.filter((i: any) => i.id !== docRef.id);
   localStorage.setItem(`db_${docRef.path}`, JSON.stringify(list));
@@ -143,6 +149,7 @@ export const writeBatch = (db: any) => {
       operations.push(() => deleteDoc(docRef));
     },
     commit: async () => {
+      await delay(300);
       for (const op of operations) {
         await op();
       }

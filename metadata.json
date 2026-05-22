@@ -2,5 +2,5 @@
   "name": "FURANO - Premium Oral Care",
   "description": "FURANO - Chăm sóc hàm răng chuyên biệt cho người niềng răng",
   "requestFramePermissions": [],
-  "majorCapabilities": []
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

@@ -125,9 +125,10 @@ const ItemModal = ({ item, fields, onSave, onClose, isProduct = false }: any) =>
   const [formData, setFormData] = useState<any>(
     item || fields.reduce((acc: any, field: any) => ({ ...acc, [field.name]: field.defaultValue || '' }), {})
   );
+  const [isTranslating, setIsTranslating] = useState(false);
 
   const handleChange = (name: string, value: any) => {
-    setFormData({ ...formData, [name]: value });
+    setFormData((prev: any) => ({ ...prev, [name]: value }));
   };
 
   const handleArrayChange = (name: string, value: string) => {
@@ -140,11 +141,60 @@ const ItemModal = ({ item, fields, onSave, onClose, isProduct = false }: any) =>
     onSave(formData);
   };
 
+  const handleAutoTranslate = async () => {
+    setIsTranslating(true);
+    try {
+      const translateField = async (text: string) => {
+        if (!text) return '';
+        const res = await fetch('/api/translate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text })
+        });
+        const data = await res.json();
+        return data.translatedText || text;
+      };
+
+      const fieldsToTranslate = [
+        { vn: 'title', en: 'title_en' },
+        { vn: 'excerpt', en: 'excerpt_en' },
+        { vn: 'content', en: 'content_en' }
+      ];
+
+      const updates: any = {};
+      for (const f of fieldsToTranslate) {
+        if (formData[f.vn]) {
+           updates[f.en] = await translateField(formData[f.vn]);
+        }
+      }
+      setFormData((prev: any) => ({ ...prev, ...updates }));
+      alert('Dịch tự động thành công!');
+    } catch(err) {
+      console.error(err);
+      alert('Có lỗi khi dịch.');
+    } finally {
+      setIsTranslating(false);
+    }
+  };
+
+  const hasTranslatableFields = fields.some((f: any) => f.name === 'title_en');
+
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 overflow-y-auto">
       <div className="bg-white rounded-2xl p-6 w-full max-w-3xl my-8">
         <div className="flex justify-between items-center mb-6">
-          <h3 className="text-2xl font-bold">{item ? 'Chỉnh sửa' : 'Thêm mới'}</h3>
+          <div className="flex items-center gap-4">
+            <h3 className="text-2xl font-bold">{item ? 'Chỉnh sửa' : 'Thêm mới'}</h3>
+            {hasTranslatableFields && (
+              <button 
+                onClick={handleAutoTranslate} 
+                disabled={isTranslating} 
+                className="px-3 py-1 bg-brand-50 text-brand-700 text-sm font-semibold rounded-lg hover:bg-brand-100 disabled:opacity-50"
+              >
+                {isTranslating ? 'Đang dịch...' : '⚡ Dịch tự động sang tiếng Anh'}
+              </button>
+            )}
+          </div>
           <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full"><X className="w-5 h-5" /></button>
         </div>
         <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
@@ -162,13 +212,42 @@ const ItemModal = ({ item, fields, onSave, onClose, isProduct = false }: any) =>
                 ) : field.type === 'image' ? (
                   <div className="flex gap-4 items-start">
                     {val && <img src={val} alt="Preview" className="w-24 h-24 object-cover rounded-lg border" />}
-                    <input
-                      type="text"
-                      placeholder="Image URL"
-                      value={val || ''}
-                      onChange={(e) => handleChange(field.name, e.target.value)}
-                      className="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-brand-500"
-                    />
+                    <div className="flex-1 space-y-2">
+                      <input
+                        type="text"
+                        placeholder="Image URL hoặc chọn tệp bên dưới"
+                        value={val || ''}
+                        onChange={(e) => handleChange(field.name, e.target.value)}
+                        className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-brand-500"
+                      />
+                      <input 
+                        type="file" 
+                        accept="image/*"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            const reader = new FileReader();
+                            reader.onloadend = () => {
+                              const img = new Image();
+                              img.src = reader.result as string;
+                              img.onload = () => {
+                                const canvas = document.createElement('canvas');
+                                const MAX_WIDTH = 800; // Resize to max 800px width
+                                const scaleSize = MAX_WIDTH / img.width;
+                                canvas.width = MAX_WIDTH;
+                                canvas.height = img.height * scaleSize;
+                                const ctx = canvas.getContext('2d');
+                                ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+                                const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                                handleChange(field.name, compressedDataUrl);
+                              };
+                            };
+                            reader.readAsDataURL(file);
+                          }
+                        }}
+                        className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100"
+                      />
+                    </div>
                   </div>
                 ) : field.type === 'array' ? (
                   <textarea
@@ -262,13 +341,58 @@ const GenericCollectionManager = ({ title, collectionName, fields }: any) => {
     }
   };
 
+  const [isTranslatingAll, setIsTranslatingAll] = useState(false);
+
+  const handleTranslateAll = async () => {
+    if (!confirm('Dịch tự động tất cả bài viết chưa có tiếng Anh? Việc này có thể mất vài phút.')) return;
+    setIsTranslatingAll(true);
+    try {
+      const translateField = async (text: string) => {
+        if (!text) return '';
+        const res = await fetch('/api/translate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text })
+        });
+        const data = await res.json();
+        return data.translatedText || text;
+      };
+
+      const itemsToUpdate = items.filter(item => !item.title_en);
+      for (const item of itemsToUpdate) {
+         const updates: any = {};
+         if (item.title && !item.title_en) updates.title_en = await translateField(item.title);
+         if (item.excerpt && !item.excerpt_en) updates.excerpt_en = await translateField(item.excerpt);
+         if (item.content && !item.content_en) updates.content_en = await translateField(item.content);
+         
+         if (Object.keys(updates).length > 0) {
+            await setDoc(doc(db, collectionName, item.id), updates, { merge: true });
+         }
+      }
+      alert('Đã hoàn thành dịch tự động các bài viết!');
+      fetchItems();
+    } catch(e) {
+      console.error(e);
+      alert('Có lỗi xảy ra trong quá trình dịch.');
+    } finally {
+      setIsTranslatingAll(false);
+    }
+  };
+
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">{title}</h2>
-        <button onClick={() => setIsCreating(true)} className="px-4 py-2 flex items-center gap-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800">
-          <Plus className="w-4 h-4" /> Thêm Mới
-        </button>
+        <div className="flex items-center gap-3">
+          {collectionName === 'blogPosts' && (
+             <button onClick={handleTranslateAll} disabled={isTranslatingAll} className="px-4 py-2 flex items-center gap-2 bg-blue-50 text-blue-700 rounded-lg font-medium hover:bg-blue-100 disabled:opacity-50">
+               {isTranslatingAll ? 'Đang dịch...' : '⚡ Dịch tất cả bài viết'}
+             </button>
+          )}
+          <button onClick={() => setIsCreating(true)} className="px-4 py-2 flex items-center gap-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800">
+            <Plus className="w-4 h-4" /> Thêm Mới
+          </button>
+        </div>
       </div>
 
       {loading ? (
@@ -649,11 +773,14 @@ export default function AdminPage() {
       <TabPanel active={activeTab === 'Blog Posts'}>
         <GenericCollectionManager title="Bài viết Blog" collectionName="blogPosts" fields={[
           { name: 'title', label: 'Tiêu đề', type: 'text' },
+          { name: 'title_en', label: 'Tiêu đề (EN)', type: 'text' },
           { name: 'category', label: 'Chuyên mục', type: 'text' },
           { name: 'date', label: 'Ngày tháng (VD: 24 Thg 05, 2024)', type: 'text' },
           { name: 'image', label: 'Ảnh đại diện', type: 'image' },
           { name: 'excerpt', label: 'Mô tả ngắn', type: 'textarea' },
-          { name: 'content', label: 'Nội dung (Hỗ trợ Markdown)', type: 'textarea' }
+          { name: 'excerpt_en', label: 'Mô tả ngắn (EN)', type: 'textarea' },
+          { name: 'content', label: 'Nội dung (Hỗ trợ Markdown)', type: 'textarea' },
+          { name: 'content_en', label: 'Nội dung (EN)', type: 'textarea' }
         ]} />
       </TabPanel>
       

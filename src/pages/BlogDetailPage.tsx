@@ -8,7 +8,7 @@ import { db, doc, getDoc } from '../localDB';
 
 export default function BlogDetailPage() {
   const { id } = useParams();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   
   const [post, setPost] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -31,6 +31,13 @@ export default function BlogDetailPage() {
     fetchPost();
     window.scrollTo(0, 0);
   }, [id]);
+
+  const getLocalized = (field: string) => {
+    if (i18n.language === 'en' && post[`${field}_en`]) {
+      return post[`${field}_en`];
+    }
+    return post[field];
+  };
 
   if (loading) {
      return <div className="min-h-screen pt-32 px-4 text-center">{t("Đang tải...")}</div>;
@@ -59,11 +66,11 @@ export default function BlogDetailPage() {
             
             <div className="flex items-center gap-3 mb-6">
               <span className="px-3 py-1 bg-brand-50 text-brand-800 text-xs font-bold rounded-full">
-                {t(post.category)}
+                {getLocalized('category')}
               </span>
               <span className="flex items-center text-gray-500 text-sm">
                 <CalendarDays className="w-4 h-4 mr-1.5" />
-                {t(post.date)}
+                {getLocalized('date')}
               </span>
               <span className="flex items-center text-gray-500 text-sm ml-2">
                 <Clock className="w-4 h-4 mr-1.5" />
@@ -72,11 +79,11 @@ export default function BlogDetailPage() {
             </div>
 
             <h1 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">
-               {t(post.title)}
+               {getLocalized('title')}
             </h1>
             
             <p className="text-xl text-gray-600 leading-relaxed">
-               {t(post.excerpt)}
+               {getLocalized('excerpt')}
             </p>
          </div>
       </div>
@@ -86,14 +93,14 @@ export default function BlogDetailPage() {
            <div className="aspect-[21/9] w-full bg-gray-100">
               <img 
                src={post.image} 
-               alt={t(post.title)} 
+               alt={getLocalized('title')} 
                className="w-full h-full object-cover"
               />
            </div>
            
            <div className="p-8 md:p-12 lg:p-16">
               <div className="prose prose-lg md:prose-xl prose-brand max-w-none text-gray-700">
-                <ReactMarkdown>{t(post.content)}</ReactMarkdown>
+                <ReactMarkdown>{getLocalized('content') || ''}</ReactMarkdown>
               </div>
 
               <div className="mt-16 pt-8 border-t border-gray-100 flex items-center justify-between">
