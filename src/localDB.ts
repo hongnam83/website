@@ -39,11 +39,13 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 import { categories } from './data/products';
 import { blogPosts } from './data/blogPosts';
 import { faqs } from './data/faqs';
+import { testimonials as sheetTestimonials } from './data/testimonials';
 
 const seedData: any = {
   products: categories,
   blogPosts: blogPosts,
   faqs: faqs,
+  testimonials: sheetTestimonials,
   admins: [{ id: '1', email: 'sonnt.credit@gmail.com' }]
 };
 

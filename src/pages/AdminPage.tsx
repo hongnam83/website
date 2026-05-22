@@ -49,7 +49,7 @@ const AdminLayout = ({ children, activeTab, setActiveTab, user, onLogout }: any)
             <h2 className="text-2xl font-bold text-brand-400">Furano Admin</h2>
           </div>
           <nav className="mt-4">
-            {['Dashboard', 'Site Settings', 'Categories & Products', 'Blog Posts', 'FAQs', 'Admin Users'].map((tab) => (
+            {['Dashboard', 'Site Settings', 'Categories & Products', 'Blog Posts', 'FAQs', 'Đánh giá khách hàng', 'Admin Users'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -60,6 +60,7 @@ const AdminLayout = ({ children, activeTab, setActiveTab, user, onLogout }: any)
                 {tab === 'Categories & Products' && 'Danh mục & Sản phẩm'}
                 {tab === 'Blog Posts' && 'Bài viết Blog'}
                 {tab === 'FAQs' && 'Hỏi Đáp (FAQs)'}
+                {tab === 'Đánh giá khách hàng' && 'Đánh giá khách hàng'}
                 {tab === 'Admin Users' && 'Thành viên Quản trị'}
               </button>
             ))}
@@ -827,6 +828,17 @@ export default function AdminPage() {
         <GenericCollectionManager title="Câu Hỏi Thường Gặp" collectionName="faqs" fields={[
           { name: 'question', label: 'Câu hỏi', type: 'text' },
           { name: 'answer', label: 'Câu trả lời', type: 'textarea' }
+        ]} />
+      </TabPanel>
+
+      <TabPanel active={activeTab === 'Đánh giá khách hàng'}>
+        <GenericCollectionManager title="Đánh giá khách hàng" collectionName="testimonials" fields={[
+          { name: 'name', label: 'Tên khách hàng', type: 'text' },
+          { name: 'role', label: 'Vai trò (VD: Đã mua hàng)', type: 'text' },
+          { name: 'product', label: 'Sản phẩm', type: 'text' },
+          { name: 'stars', label: 'Số sao (1-5)', type: 'number' },
+          { name: 'content', label: 'Nội dung nhận xét', type: 'textarea' },
+          { name: 'image', label: 'Hình ảnh khách hàng', type: 'image' }
         ]} />
       </TabPanel>
 
