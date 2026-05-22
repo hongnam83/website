@@ -49,57 +49,84 @@ const seedData: any = {
 
 export const getDocs = async (collectionRef: any) => {
   await delay(300);
-  let dataStr = localStorage.getItem(`db_${collectionRef.path}`);
-  if (!dataStr && seedData[collectionRef.path]) {
-    dataStr = JSON.stringify(seedData[collectionRef.path]);
-    localStorage.setItem(`db_${collectionRef.path}`, dataStr);
+  try {
+    const res = await fetch(`/api/db/${collectionRef.path}`);
+    let data = [];
+    if (res.ok) {
+        data = await res.json();
+    }
+    
+    // Fallback to seed data if API returns empty and we have seed data
+    if (data.length === 0 && seedData[collectionRef.path]) {
+      data = seedData[collectionRef.path];
+      // Init API with seed data
+      for (const item of data) {
+         await setDoc(doc({ path: collectionRef.path }, item.id), item);
+      }
+    }
+    
+    return {
+      docs: data.map((item: any) => ({
+        id: item.id,
+        data: () => item
+      }))
+    };
+  } catch (e) {
+      console.error(e);
+      return { docs: [] };
   }
-  const data = JSON.parse(dataStr || '[]');
-  return {
-    docs: data.map((item: any) => ({
-      id: item.id,
-      data: () => item
-    }))
-  };
 };
 
 export const getDoc = async (docRef: any) => {
   await delay(300);
-  let dataStr = localStorage.getItem(`db_${docRef.path}`);
-  if (!dataStr && seedData[docRef.path]) {
-    dataStr = JSON.stringify(seedData[docRef.path]);
-    localStorage.setItem(`db_${docRef.path}`, dataStr);
+  try {
+      const res = await fetch(`/api/db/${docRef.path}/${docRef.id}`);
+      if (!res.ok) {
+          // If not found, try to look up in seedData
+          if (seedData[docRef.path]) {
+             const item = seedData[docRef.path].find((i: any) => i.id === docRef.id);
+             if (item) {
+                 await setDoc(docRef, item);
+                 return { id: docRef.id, exists: () => true, data: () => item };
+             }
+          }
+          return { id: docRef.id, exists: () => false, data: () => null };
+      }
+      const item = await res.json();
+      return {
+        id: docRef.id,
+        exists: () => !!item,
+        data: () => item
+      };
+  } catch (e) {
+      return { id: docRef.id, exists: () => false, data: () => null };
   }
-  const data = JSON.parse(dataStr || '[]');
-  const item = data.find((i: any) => i.id === docRef.id);
-  return {
-    id: docRef.id,
-    exists: () => !!item,
-    data: () => item
-  };
 };
 
 export const setDoc = async (docRef: any, data: any, options?: any) => {
   await delay(300);
-  let list = JSON.parse(localStorage.getItem(`db_${docRef.path}`) || '[]');
-  const index = list.findIndex((i: any) => i.id === docRef.id);
-  if (index >= 0) {
-    if (options && options.merge) {
-      list[index] = { ...list[index], ...data };
-    } else {
-      list[index] = { id: docRef.id, ...data };
-    }
-  } else {
-    list.push({ id: docRef.id, ...data });
+  try {
+      let url = `/api/db/${docRef.path}/${docRef.id}`;
+      if (options && options.merge) {
+         url += '?merge=true';
+      }
+      await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+      });
+  } catch (e) {
+      console.error(e);
   }
-  localStorage.setItem(`db_${docRef.path}`, JSON.stringify(list));
 };
 
 export const deleteDoc = async (docRef: any) => {
   await delay(300);
-  let list = JSON.parse(localStorage.getItem(`db_${docRef.path}`) || '[]');
-  list = list.filter((i: any) => i.id !== docRef.id);
-  localStorage.setItem(`db_${docRef.path}`, JSON.stringify(list));
+  try {
+      await fetch(`/api/db/${docRef.path}/${docRef.id}`, { method: 'DELETE' });
+  } catch (e) {
+      console.error(e);
+  }
 };
 
 export const signInWithEmailAndPassword = async (authObj: any, email: string, password: string) => {

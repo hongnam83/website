@@ -6,6 +6,39 @@ import { blogPosts as defaultBlogPosts } from '../data/blogPosts';
 import AdminUsersManager from '../components/AdminUsersManager';
 import SiteSettingsManager from '../components/SiteSettingsManager';
 
+const AdminLoadingSkeleton = () => (
+  <div className="w-full flex flex-col gap-6 animate-pulse">
+    <div className="h-10 bg-gray-200 rounded-lg w-1/4"></div>
+    <div className="flex gap-8">
+      <div className="w-1/3 flex flex-col gap-3">
+        <div className="h-12 bg-gray-200 rounded-lg w-full"></div>
+        <div className="h-12 bg-gray-200 rounded-lg w-full"></div>
+        <div className="h-12 bg-gray-200 rounded-lg w-full"></div>
+      </div>
+      <div className="w-2/3 flex flex-col gap-4">
+        <div className="flex gap-4">
+          <div className="h-24 bg-gray-200 rounded-xl w-1/2"></div>
+          <div className="h-24 bg-gray-200 rounded-xl w-1/2"></div>
+        </div>
+        <div className="flex gap-4">
+          <div className="h-24 bg-gray-200 rounded-xl w-1/2"></div>
+          <div className="h-24 bg-gray-200 rounded-xl w-1/2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+const AdminTableSkeleton = () => (
+  <div className="w-full flex flex-col gap-4 animate-pulse pt-2">
+    <div className="h-12 bg-gray-200 rounded-lg w-full"></div>
+    <div className="h-12 bg-gray-100 rounded-lg w-full"></div>
+    <div className="h-12 bg-gray-50 rounded-lg w-full"></div>
+    <div className="h-12 bg-gray-100 rounded-lg w-full"></div>
+    <div className="h-12 bg-gray-50 rounded-lg w-full"></div>
+  </div>
+);
+
 const AdminLayout = ({ children, activeTab, setActiveTab, user, onLogout }: any) => {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col md:flex-row">
@@ -402,7 +435,7 @@ const GenericCollectionManager = ({ title, collectionName, fields }: any) => {
       </div>
 
       {loading ? (
-        <p>Đang tải...</p>
+        <AdminTableSkeleton />
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
@@ -552,7 +585,7 @@ const CategoriesProductsManager = () => {
     { name: 'variants', label: 'Phân loại (JSON)', type: 'variants' }
   ];
 
-  if (loading) return <p>Đang tải dữ liệu...</p>;
+  if (loading) return <AdminLoadingSkeleton />;
 
   return (
     <div className="flex gap-8">

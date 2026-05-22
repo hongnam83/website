@@ -69,7 +69,11 @@ export default function AdminUsersManager() {
       
       <div className="p-6">
         {loading ? (
-          <p>Đang tải...</p>
+          <div className="w-full flex flex-col gap-4 animate-pulse pt-2">
+            <div className="h-12 bg-gray-200 rounded-lg w-full"></div>
+            <div className="h-12 bg-gray-100 rounded-lg w-full"></div>
+            <div className="h-12 bg-gray-50 rounded-lg w-full"></div>
+          </div>
         ) : (
           <table className="w-full text-left">
             <thead>

@@ -95,7 +95,19 @@ export default function SiteSettingsManager() {
     </div>
   );
 
-  if (loading) return <div className="p-4">Đang tải...</div>;
+  if (loading) return (
+    <div className="bg-white rounded-xl shadow-sm border border-gray-100 min-h-[500px] animate-pulse">
+      <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50 rounded-t-xl">
+         <div className="h-6 bg-gray-200 rounded w-1/3"></div>
+         <div className="h-10 bg-gray-200 rounded w-24"></div>
+      </div>
+      <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+         <div className="h-64 bg-gray-100 rounded-lg"></div>
+         <div className="h-64 bg-gray-100 rounded-lg"></div>
+         <div className="h-64 bg-gray-100 rounded-lg"></div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 min-h-[500px]">

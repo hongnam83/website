@@ -49,7 +49,18 @@ export default function ProductDetailPage() {
   }, [product]);
 
   if (loading) {
-     return <div className="min-h-screen pt-32 px-4 text-center">{t("Đang tải...")}</div>;
+     return (
+        <div className="min-h-screen pt-32 px-4 max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 animate-pulse">
+           <div className="w-full lg:w-1/2 h-[500px] bg-gray-200 rounded-3xl"></div>
+           <div className="w-full lg:w-1/2 flex flex-col gap-6 mt-8 lg:mt-0">
+              <div className="h-6 bg-gray-200 rounded w-24"></div>
+              <div className="h-12 bg-gray-200 rounded w-3/4"></div>
+              <div className="h-8 bg-gray-200 rounded w-1/4"></div>
+              <div className="h-24 bg-gray-200 rounded w-full mt-4"></div>
+              <div className="h-16 bg-gray-200 rounded w-full mt-4"></div>
+           </div>
+        </div>
+     );
   }
 
   if (!product) {
