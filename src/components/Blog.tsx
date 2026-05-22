@@ -2,13 +2,33 @@ import { motion } from 'motion/react';
 import { ArrowRight, Clock } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { blogPosts } from '../data/blogPosts';
+import { useState, useEffect } from 'react';
+import { db, collection, getDocs } from '../localDB';
+import { blogPosts as defaultBlogPosts } from '../data/blogPosts';
 
 export default function Blog() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const [blogPosts, setBlogPosts] = useState<any[]>(defaultBlogPosts);
 
-  // Pick first 4 for the home page section
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const snapshot = await getDocs(collection(db, 'blogPosts'));
+        const posts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        if (posts.length > 0) setBlogPosts(posts);
+      } catch (err) {}
+    };
+    fetchPosts();
+  }, []);
+
   const latestPosts = blogPosts.slice(0, 4);
+
+  const getLocalized = (post: any, field: string) => {
+    if (i18n.language === 'en' && post[`${field}_en`]) {
+      return post[`${field}_en`];
+    }
+    return post[field];
+  };
 
   return (
     <section className="py-24 bg-white border-t border-gray-100" id="blog">
@@ -33,31 +53,31 @@ export default function Blog() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={{ duration: 0.3 }}
                 className="flex flex-col h-full"
               >
                 <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-6 bg-gray-100">
                   <img 
                     src={post.image} 
-                    alt={t(post.title)} 
+                    alt={getLocalized(post, 'title')} 
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute top-4 left-4">
                     <span className="px-3 py-1 bg-white/90 backdrop-blur text-brand-800 text-xs font-bold rounded-full shadow-sm">
-                      {t(post.category)}
+                      {getLocalized(post, 'category')}
                     </span>
                   </div>
                 </div>
                 <div className="flex-grow flex flex-col">
                   <div className="flex items-center text-gray-500 text-xs mb-3">
                     <Clock className="w-3.5 h-3.5 mr-1" />
-                    {t(post.date)}
+                    {getLocalized(post, 'date')}
                   </div>
                   <h4 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-brand-800 transition-colors line-clamp-2">
-                    {t(post.title)}
+                    {getLocalized(post, 'title')}
                   </h4>
                   <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
-                    {t(post.excerpt)}
+                    {getLocalized(post, 'excerpt')}
                   </p>
                   <div className="mt-auto pt-4 flex items-center text-sm font-medium text-brand-800">
                     {t("Đọc tiếp")} <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />

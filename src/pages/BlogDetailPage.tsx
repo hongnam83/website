@@ -5,19 +5,19 @@ import { ArrowLeft, Clock, CalendarDays, Share2 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import CTASection from '../components/CTASection';
 import { db, doc, getDoc } from '../localDB';
+import { blogPosts as defaultBlogPosts } from '../data/blogPosts';
 
 export default function BlogDetailPage() {
   const { id } = useParams();
   const { t, i18n } = useTranslation();
   
-  const [post, setPost] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const [post, setPost] = useState<any>(() => defaultBlogPosts.find(p => p.id === id) || null);
+  const [loading, setLoading] = useState(!post);
 
   useEffect(() => {
     const fetchPost = async () => {
       if (!id) return;
       try {
-         setLoading(true);
          const docSnap = await getDoc(doc(db, 'blogPosts', id));
          if (docSnap.exists()) {
            setPost({ id: docSnap.id, ...docSnap.data() });

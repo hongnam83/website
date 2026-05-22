@@ -5,19 +5,20 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { db, collection, getDocs } from '../localDB';
 import { useSiteSettings } from '../contexts/SiteSettingsContext';
+import { blogPosts as defaultBlogPosts } from '../data/blogPosts';
 
 export default function BlogPage() {
   const { t, i18n } = useTranslation();
   const settings = useSiteSettings();
   const [visibleCount, setVisibleCount] = useState(12);
-  const [blogPosts, setBlogPosts] = useState<any[]>([]);
+  const [blogPosts, setBlogPosts] = useState<any[]>(defaultBlogPosts);
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         const snapshot = await getDocs(collection(db, 'blogPosts'));
         const posts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        setBlogPosts(posts);
+        if (posts.length > 0) setBlogPosts(posts);
       } catch (err) {
         // console.warn('Firebase fetch failed:', err);
       }
@@ -62,7 +63,7 @@ export default function BlogPage() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: (index % 12) * 0.05 }}
+                transition={{ duration: 0.3 }}
                 className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full hover:shadow-md transition-shadow"
               >
                 <div className="relative aspect-[4/3] bg-gray-100 overflow-hidden">

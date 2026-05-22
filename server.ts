@@ -66,19 +66,19 @@ async function startServer() {
     const db = readDB();
     if (!db[req.params.collection]) db[req.params.collection] = [];
     const collection = db[req.params.collection];
-    const index = collection.findIndex((i: any) => i.id === req.params.id);
+    const index = collection.findIndex((i: any) => String(i.id) === String(req.params.id));
     
     // Check if req.body has a merge flag (sent via headers or query)
     const merge = req.query.merge === 'true';
     
     if (index >= 0) {
       if (merge) {
-         collection[index] = { ...collection[index], ...req.body };
+         collection[index] = { ...collection[index], ...req.body, id: req.params.id };
       } else {
-         collection[index] = { id: req.params.id, ...req.body };
+         collection[index] = { ...req.body, id: req.params.id };
       }
     } else {
-      collection.push({ id: req.params.id, ...req.body });
+      collection.push({ ...req.body, id: req.params.id });
     }
     
     writeDB(db);
