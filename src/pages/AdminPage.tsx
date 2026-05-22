@@ -761,15 +761,10 @@ const LoginScreen = ({ onLogin }: { onLogin: (user: User) => void }) => {
 };
 
 const TabPanel = ({ active, children }: any) => {
-  const [hasRendered, setHasRendered] = useState(active);
-  useEffect(() => {
-    if (active && !hasRendered) setHasRendered(true);
-  }, [active, hasRendered]);
-
-  if (!hasRendered) return null;
+  if (!active) return null;
 
   return (
-    <div className={active ? 'block' : 'hidden'}>
+    <div className="block">
       {children}
     </div>
   );
