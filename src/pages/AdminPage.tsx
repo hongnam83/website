@@ -233,12 +233,18 @@ const ItemModal = ({ item, fields, onSave, onClose, isProduct = false }: any) =>
                               img.onload = () => {
                                 const canvas = document.createElement('canvas');
                                 const MAX_WIDTH = 800; // Resize to max 800px width
-                                const scaleSize = MAX_WIDTH / img.width;
-                                canvas.width = MAX_WIDTH;
-                                canvas.height = img.height * scaleSize;
+                                let targetWidth = img.width;
+                                let targetHeight = img.height;
+                                if (img.width > MAX_WIDTH) {
+                                  const scaleSize = MAX_WIDTH / img.width;
+                                  targetWidth = MAX_WIDTH;
+                                  targetHeight = img.height * scaleSize;
+                                }
+                                canvas.width = targetWidth;
+                                canvas.height = targetHeight;
                                 const ctx = canvas.getContext('2d');
                                 ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
-                                const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                                const compressedDataUrl = canvas.toDataURL('image/webp', 0.85);
                                 handleChange(field.name, compressedDataUrl);
                               };
                             };

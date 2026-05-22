@@ -13,13 +13,24 @@ export const collection = (db: any, path: string) => {
   return { path };
 };
 
-export const doc = (db: any, path: string, id?: string) => {
-  if (!id) {
-    // If it's doc(collectionRef, id)
-    if (typeof path === 'object' && (path as any).path) {
-      return { path: (path as any).path, id: arguments[2] || Math.random().toString(36).substring(7) };
-    }
+export const doc = (...args: any[]) => {
+  let path = '';
+  let id = '';
+  
+  if (args.length === 2 && typeof args[0] === 'object' && args[0].path) {
+    // doc(collectionRef, id)
+    path = args[0].path;
+    id = args[1] || Math.random().toString(36).substring(7);
+  } else if (args.length >= 2 && typeof args[1] === 'string') {
+    // doc(db, path, id?)
+    path = args[1];
+    id = args[2] || Math.random().toString(36).substring(7);
+  } else if (args.length === 1 && typeof args[0] === 'object') {
+     // doc(collectionRef) just generate random id
+     path = args[0].path;
+     id = Math.random().toString(36).substring(7);
   }
+  
   return { path, id: id || Math.random().toString(36).substring(7) };
 };
 
@@ -62,6 +73,7 @@ export const getDoc = async (docRef: any) => {
   const data = JSON.parse(dataStr || '[]');
   const item = data.find((i: any) => i.id === docRef.id);
   return {
+    id: docRef.id,
     exists: () => !!item,
     data: () => item
   };

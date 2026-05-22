@@ -59,7 +59,7 @@ export default function SiteSettingsManager() {
           }
           const ctx = canvas.getContext('2d');
           ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
-          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+          const compressedDataUrl = canvas.toDataURL('image/webp', 0.85);
           handleChange(key, compressedDataUrl);
         };
       };
