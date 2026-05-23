@@ -3,20 +3,25 @@ import { Star, Quote, Package } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useState, useEffect } from 'react';
 import { db, collection, getDocs } from '../localDB';
+import { testimonials as defaultTestimonials } from '../data/testimonials';
 
 export default function Testimonials() {
   const { t } = useTranslation();
-  const [testimonials, setTestimonials] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [testimonials, setTestimonials] = useState<any[]>(defaultTestimonials);
+  const [loading, setLoading] = useState(!defaultTestimonials || defaultTestimonials.length === 0);
 
   useEffect(() => {
     const fetchTestimonials = async () => {
-       const res = await getDocs(collection(db, 'testimonials'));
-       let fetched = res.docs.map((d: any) => ({
-           id: d.id, ...d.data()
-       }));
-       setTestimonials(fetched);
-       setLoading(false);
+      try {
+        const res = await getDocs(collection(db, 'testimonials'));
+        let fetched = res.docs.map((d: any) => ({
+            id: d.id, ...d.data()
+        }));
+        if (fetched.length > 0) {
+          setTestimonials(fetched);
+        }
+      } catch (err) {}
+      setLoading(false);
     };
     fetchTestimonials();
   }, []);
