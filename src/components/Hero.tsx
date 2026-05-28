@@ -2,6 +2,7 @@ import { motion } from 'motion/react';
 import { ArrowRight, Star, ShieldCheck } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useSiteSettings } from '../contexts/SiteSettingsContext';
+import { Link } from 'react-router-dom';
 
 export default function Hero() {
   const { t } = useTranslation();
@@ -39,13 +40,13 @@ export default function Hero() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 mb-10">
-              <a
-                href="#products"
+              <Link
+                to="/products"
                 className="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-white bg-brand-800 hover:bg-brand-900 rounded-full transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
               >
                 {t('Xem Danh Mục Sản Phẩm', 'Xem Danh Mục Sản Phẩm')}
                 <ArrowRight className="w-5 h-5 ml-2" />
-              </a>
+              </Link>
               <a
                 href="#routine"
                 className="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-brand-800 bg-white border border-brand-200 hover:bg-brand-50 rounded-full transition-colors"

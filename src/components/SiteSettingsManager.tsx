@@ -112,7 +112,7 @@ export default function SiteSettingsManager() {
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 min-h-[500px]">
       <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50 rounded-t-xl">
-        <h2 className="text-xl text-gray-800 font-bold">Hình ảnh Trang Web (Hero Images)</h2>
+        <h2 className="text-xl text-gray-800 font-bold">Cài đặt chung & Hình ảnh</h2>
         <button
           onClick={handleSave}
           disabled={saving}
@@ -123,6 +123,41 @@ export default function SiteSettingsManager() {
       </div>
       
       <div className="p-6 space-y-6 max-w-4xl bg-gray-50">
+          <h3 className="font-bold text-lg text-gray-800 px-1 border-b pb-2">Thông tin liên hệ & Footer</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Địa chỉ</label>
+              <input type="text" value={settings.address || ''} onChange={(e) => handleChange('address', e.target.value)} className="w-full border p-2 rounded focus:ring-2 focus:ring-brand-500 text-sm" placeholder="VD: Chung cư Hoàng Dương..." />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Số điện thoại</label>
+              <input type="text" value={settings.phone || ''} onChange={(e) => handleChange('phone', e.target.value)} className="w-full border p-2 rounded focus:ring-2 focus:ring-brand-500 text-sm" placeholder="VD: 1900 6868" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+              <input type="email" value={settings.email || ''} onChange={(e) => handleChange('email', e.target.value)} className="w-full border p-2 rounded focus:ring-2 focus:ring-brand-500 text-sm" placeholder="VD: cskh@sabaicare.vn" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Mô tả ngắn (Footer)</label>
+              <textarea value={settings.footerDescription || ''} onChange={(e) => handleChange('footerDescription', e.target.value)} className="w-full border p-2 rounded focus:ring-2 focus:ring-brand-500 text-sm h-10" placeholder="Thương hiệu dược mỹ phẩm..."></textarea>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Facebook Link</label>
+              <input type="text" value={settings.facebookLink || ''} onChange={(e) => handleChange('facebookLink', e.target.value)} className="w-full border p-2 rounded focus:ring-2 focus:ring-brand-500 text-sm" placeholder="https://facebook.com/..." />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Instagram Link</label>
+              <input type="text" value={settings.instagramLink || ''} onChange={(e) => handleChange('instagramLink', e.target.value)} className="w-full border p-2 rounded focus:ring-2 focus:ring-brand-500 text-sm" placeholder="https://instagram.com/..." />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">TikTok Link</label>
+              <input type="text" value={settings.tiktokLink || ''} onChange={(e) => handleChange('tiktokLink', e.target.value)} className="w-full border p-2 rounded focus:ring-2 focus:ring-brand-500 text-sm" placeholder="https://tiktok.com/..." />
+            </div>
+          </div>
+
+          <hr className="my-6 border-gray-200" />
+          <h3 className="font-bold text-lg text-gray-800 px-1 border-b pb-2">Hình ảnh Trang Web (Hero Images)</h3>
+          
           {renderImageField('Ảnh Hero Trang Chủ', 'homeHeroImage')}
           {renderImageField('Ảnh Bìa (Cover) Trang Sản Phẩm', 'productsCoverImage')}
           {renderImageField('Ảnh Bìa (Cover) Trang Danh Sách Blog', 'blogCoverImage')}

@@ -2,6 +2,8 @@ import { Facebook, Instagram, Phone, Mail, MapPin } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import FuranoLogo from './FuranoLogo';
+import { useState, useEffect } from 'react';
+import { db, doc, getDoc } from '../localDB';
 
 const TiktokIcon = ({ className }: { className?: string }) => (
   <svg className={className} fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -11,6 +13,20 @@ const TiktokIcon = ({ className }: { className?: string }) => (
 
 export default function Footer() {
   const { t } = useTranslation();
+  const [settings, setSettings] = useState<any>({});
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const snap = await getDoc(doc(db, 'settings', 'general'));
+        if (snap.exists()) {
+          setSettings(snap.data());
+        }
+      } catch (err) {}
+    };
+    fetchSettings();
+  }, []);
+
   return (
     <footer className="bg-brand-50 text-gray-600 pt-20 pb-10 border-t border-brand-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -22,16 +38,16 @@ export default function Footer() {
               <FuranoLogo className="w-auto h-12" />
             </a>
             <p className="text-sm leading-relaxed mb-6">
-              {t("Thương hiệu dược mỹ phẩm hàng đầu cung cấp giải pháp chăm sóc toàn diện chuẩn y khoa thiết kế riêng cho người niềng răng tại Việt Nam.")}
+              {t(settings.footerDescription || "Thương hiệu dược mỹ phẩm hàng đầu cung cấp giải pháp chăm sóc toàn diện chuẩn y khoa thiết kế riêng cho người niềng răng tại Việt Nam.")}
             </p>
             <div className="flex gap-4">
-              <a href="#" className="w-10 h-10 rounded-full bg-white hover:bg-brand-600 hover:text-white flex items-center justify-center transition-colors text-gray-500 shadow-sm">
+              <a href={settings.facebookLink || "#"} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white hover:bg-brand-600 hover:text-white flex items-center justify-center transition-colors text-gray-500 shadow-sm">
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-white hover:bg-brand-600 hover:text-white flex items-center justify-center transition-colors text-gray-500 shadow-sm">
+              <a href={settings.instagramLink || "#"} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white hover:bg-brand-600 hover:text-white flex items-center justify-center transition-colors text-gray-500 shadow-sm">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white hover:bg-brand-600 hover:text-white flex items-center justify-center transition-colors text-gray-500 shadow-sm">
+              <a href={settings.tiktokLink || "https://tiktok.com"} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white hover:bg-brand-600 hover:text-white flex items-center justify-center transition-colors text-gray-500 shadow-sm">
                 <TiktokIcon className="w-5 h-5" />
               </a>
             </div>
@@ -43,15 +59,15 @@ export default function Footer() {
             <ul className="space-y-4 text-sm">
               <li className="flex gap-3">
                 <MapPin className="w-5 h-5 text-gray-400 shrink-0" />
-                <span>{t("Chung cư Hoàng Dương, Số 50, Ngõ 83, đường Ngọc Hồi, Yên Sở, Hà Nội")}</span>
+                <span>{t(settings.address || "Chung cư Hoàng Dương, Số 50, Ngõ 83, đường Ngọc Hồi, Yên Sở, Hà Nội")}</span>
               </li>
               <li className="flex gap-3 items-center">
                 <Phone className="w-5 h-5 text-gray-400 shrink-0" />
-                <span>1900 6868 (8:00 - 22:00)</span>
+                <span>{settings.phone || "1900 6868 (8:00 - 22:00)"}</span>
               </li>
               <li className="flex gap-3 items-center">
                 <Mail className="w-5 h-5 text-gray-400 shrink-0" />
-                <span>cskh@sabaicare.vn</span>
+                <span>{settings.email || "cskh@sabaicare.vn"}</span>
               </li>
             </ul>
           </div>

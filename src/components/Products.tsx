@@ -85,7 +85,7 @@ function ProductCard({ product }: { product: ProductDetail }) {
           </ul>
           
           <div className="mt-auto pt-3 border-t border-gray-100 font-medium text-brand-800 text-sm flex items-center group-hover:text-brand-900">
-            {t("Khám Phá Chi Tiết")} <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+            {t("Xem thêm")} <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
           </div>
         </div>
       </Link>
