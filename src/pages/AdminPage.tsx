@@ -49,7 +49,7 @@ const AdminLayout = ({ children, activeTab, setActiveTab, user, onLogout }: any)
             <h2 className="text-2xl font-bold text-brand-400">Furano Admin</h2>
           </div>
           <nav className="mt-4">
-            {['Dashboard', 'Site Settings', 'Categories & Products', 'Blog Posts', 'FAQs', 'Đánh giá khách hàng', 'Admin Users'].map((tab) => (
+            {['Dashboard', 'Site Settings', 'Categories & Products', 'Blog Posts', 'FAQs', 'Đánh giá khách hàng', 'Đánh giá sản phẩm', 'Admin Users'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -60,7 +60,8 @@ const AdminLayout = ({ children, activeTab, setActiveTab, user, onLogout }: any)
                 {tab === 'Categories & Products' && 'Danh mục & Sản phẩm'}
                 {tab === 'Blog Posts' && 'Bài viết Blog'}
                 {tab === 'FAQs' && 'Hỏi Đáp (FAQs)'}
-                {tab === 'Đánh giá khách hàng' && 'Đánh giá khách hàng'}
+                {tab === 'Đánh giá khách hàng' && 'Đánh giá chung'}
+                {tab === 'Đánh giá sản phẩm' && 'Đánh giá sản phẩm'}
                 {tab === 'Admin Users' && 'Thành viên Quản trị'}
               </button>
             ))}
@@ -827,13 +828,23 @@ export default function AdminPage() {
       </TabPanel>
 
       <TabPanel active={activeTab === 'Đánh giá khách hàng'}>
-        <GenericCollectionManager title="Đánh giá khách hàng" collectionName="testimonials" fields={[
+        <GenericCollectionManager title="Đánh giá chung" collectionName="testimonials" fields={[
           { name: 'name', label: 'Tên khách hàng', type: 'text' },
           { name: 'role', label: 'Vai trò (VD: Đã mua hàng)', type: 'text' },
           { name: 'product', label: 'Sản phẩm', type: 'text' },
           { name: 'stars', label: 'Số sao (1-5)', type: 'number' },
           { name: 'content', label: 'Nội dung nhận xét', type: 'textarea' },
           { name: 'image', label: 'Hình ảnh khách hàng', type: 'image' }
+        ]} />
+      </TabPanel>
+
+      <TabPanel active={activeTab === 'Đánh giá sản phẩm'}>
+        <GenericCollectionManager title="Đánh giá sản phẩm" collectionName="productReviews" fields={[
+          { name: 'productId', label: 'ID Sản phẩm (vd: kem-danh-rang-ortho-sabai)', type: 'text', required: true },
+          { name: 'authorName', label: 'Tên khách hàng', type: 'text', required: true },
+          { name: 'date', label: 'Thời gian (vd: 2026-05-28)', type: 'text', required: true },
+          { name: 'rating', label: 'Số sao (1-5)', type: 'number', required: true, defaultValue: 5 },
+          { name: 'comment', label: 'Nội dung nhận xét', type: 'textarea', required: true }
         ]} />
       </TabPanel>
 

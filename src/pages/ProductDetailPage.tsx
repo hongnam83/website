@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { db, collection, getDocs } from '../localDB';
 
 import { categories as defaultCategories } from '../data/products';
+import ProductReviews from '../components/ProductReviews';
 
 import SEO from '../components/SEO';
 
@@ -205,6 +206,8 @@ export default function ProductDetailPage() {
                 {t("Nhận Tư Vấn Cho Sản Phẩm Này")}
               </button>
             </div>
+            
+            <ProductReviews productId={product.id} />
           </div>
         </div>
       </div>
