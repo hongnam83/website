@@ -7,6 +7,8 @@ import { db, collection, getDocs } from '../localDB';
 
 import { categories as defaultCategories } from '../data/products';
 
+import SEO from '../components/SEO';
+
 export default function ProductDetailPage() {
   const { id } = useParams();
   const { t } = useTranslation();
@@ -77,8 +79,27 @@ export default function ProductDetailPage() {
 
   const currentImage = hasVariants && product.variants ? product.variants[safeVariantIndex]?.image : product.image;
 
+  const productSchema = {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": t(product.name),
+    "image": currentImage,
+    "description": t(product.mainUses?.[0] || ''),
+    "brand": {
+      "@type": "Brand",
+      "name": "Furano"
+    },
+    // We don't have price info here currently, so we can omit Offers to avoid invalid schema
+  };
+
   return (
     <main className="pt-24 min-h-screen bg-gray-50 flex flex-col">
+      <SEO 
+        title={t(product.name)}
+        description={t(product.mainUses?.[0] || '')}
+        image={currentImage}
+        schema={productSchema}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-grow w-full">
         <Link to="/products" className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-brand-800 mb-8 transition-colors">
           <ArrowLeft className="w-4 h-4 mr-2" />

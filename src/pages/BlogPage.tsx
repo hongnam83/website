@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { db, collection, getDocs } from '../localDB';
 import { useSiteSettings } from '../contexts/SiteSettingsContext';
 import { blogPosts as defaultBlogPosts } from '../data/blogPosts';
+import SEO from '../components/SEO';
 
 export default function BlogPage() {
   const { t, i18n } = useTranslation();
@@ -39,6 +40,10 @@ export default function BlogPage() {
 
   return (
     <main className="pt-24 pb-24 min-h-screen bg-gray-50">
+      <SEO 
+        title={t("Cẩm Nang Chăm Sóc Nụ Cười")}
+        description={t("Kiến thức chuyên sâu và hướng dẫn chi tiết giúp bạn tự tin hơn trong suốt quá trình niềng răng.")}
+      />
       {settings?.blogCoverImage && (
         <div className="w-full h-48 md:h-64 lg:h-80 relative overflow-hidden mb-12">
            <img src={settings.blogCoverImage} alt={t("Blog")} className="w-full h-full object-cover" />

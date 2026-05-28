@@ -7,6 +7,8 @@ import CTASection from '../components/CTASection';
 import { db, doc, getDoc } from '../localDB';
 import { blogPosts as defaultBlogPosts } from '../data/blogPosts';
 
+import SEO from '../components/SEO';
+
 export default function BlogDetailPage() {
   const { id } = useParams();
   const { t, i18n } = useTranslation();
@@ -68,8 +70,31 @@ export default function BlogDetailPage() {
     );
   }
 
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": getLocalized('title'),
+    "image": [
+      post.image
+    ],
+    "datePublished": getLocalized('date'),
+    "dateModified": getLocalized('date'),
+    "author": [{
+      "@type": "Person",
+      "name": "Chuyên gia Furano",
+      "url": window.location.origin + "/about"
+    }]
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
+      <SEO 
+        title={getLocalized('title')}
+        description={getLocalized('excerpt')}
+        image={post.image}
+        type="article"
+        schema={articleSchema}
+      />
       {/* Hero Header */}
       <div className="bg-white border-b border-gray-100 pt-28 pb-12">
          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
