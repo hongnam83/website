@@ -94,8 +94,8 @@ export default function Testimonials() {
                   "{t(testimonials[currentIndex].content)}"
                 </p>
 
-                <div className="mt-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
-                  <div className="flex items-center gap-2">
+                <div className="mt-6 flex flex-col xl:flex-row items-start xl:items-center justify-between gap-6 relative z-10">
+                  <div className="flex items-center gap-2 flex-shrink-0">
                     {testimonials.map((_, i) => (
                       <button 
                         key={i} 
@@ -108,9 +108,12 @@ export default function Testimonials() {
 
                   <Link 
                     to={`/product/${testimonials[currentIndex].productId}`}
-                    className="inline-flex items-center gap-2 text-brand-300 hover:text-brand-100 transition-colors font-medium text-lg whitespace-nowrap"
+                    className="group inline-flex items-center gap-2 text-brand-300 hover:text-brand-100 transition-colors font-medium text-base md:text-lg flex-1 md:justify-end"
                   >
-                    {t('Xem thêm về')} <span className="font-bold underline underline-offset-4">{testimonials[currentIndex].productName}</span> <ArrowRight className="w-5 h-5" />
+                    <span className="line-clamp-2 text-left md:text-right">
+                      {t('Xem thêm về')} <span className="font-bold underline underline-offset-4">{testimonials[currentIndex].productName}</span>
+                    </span>
+                    <ArrowRight className="w-5 h-5 flex-shrink-0 group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </div>
               </motion.div>
