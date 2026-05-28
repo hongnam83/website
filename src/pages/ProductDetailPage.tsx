@@ -107,7 +107,7 @@ export default function ProductDetailPage() {
                       className={`relative w-8 h-8 rounded-full border-2 transition-all ${
                         selectedVariant === idx ? 'border-gray-900 scale-110' : 'border-transparent hover:scale-110'
                       } flex items-center justify-center`}
-                      title={t(variant.name)}
+                      title={t(variant?.name)}
                     >
                       <span className={`w-full h-full rounded-full ${variant.colorClass} shadow-inner`}></span>
                     </button>
@@ -118,14 +118,14 @@ export default function ProductDetailPage() {
             
             {hasVariants && product.variants && (
                <div className="p-4 bg-brand-50 rounded-xl">
-                 <p className="text-brand-800 font-medium">{t("Đang chọn:")} <span className="font-bold">{t(product.variants[safeVariantIndex].name)}</span></p>
+                 <p className="text-brand-800 font-medium">{t("Đang chọn:")} <span className="font-bold">{t(product.variants[safeVariantIndex]?.name)}</span></p>
                </div>
             )}
           </div>
 
           {/* Product Info */}
           <div className="flex flex-col">
-            <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">{t(product.name)}</h1>
+            <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">{t(product?.name)}</h1>
             
             {product.specs && (
                <div className="inline-block px-4 py-2 bg-gray-100 rounded-lg text-sm font-medium text-gray-700 mb-6 w-fit">

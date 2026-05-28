@@ -1,8 +1,8 @@
 import { Link, NavLink } from 'react-router-dom';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown, ArrowRight } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-
+import { categories } from '../data/products';
 import FuranoLogo from './FuranoLogo';
 
 export default function Header() {
@@ -60,11 +60,30 @@ export default function Header() {
                   {link.name}
                   <ChevronDown className="w-4 h-4 transition-transform group-hover/prod:rotate-180" />
                 </NavLink>
-                <div className="absolute top-full left-0 pt-4 hidden group-hover/prod:block transition-all z-50">
-                  <div className="w-56 bg-white rounded-xl shadow-lg border border-gray-100 py-2">
-                    <Link to="/products#khi-nieng" className="block px-4 py-2 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-800 font-medium">Chăm sóc khi niềng</Link>
-                    <Link to="/products#sau-nieng" className="block px-4 py-2 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-800 font-medium">Chăm sóc sau niềng (Duy trì)</Link>
-                    <Link to="/products#trang-rang-khu-mui" className="block px-4 py-2 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-800 font-medium">Làm trắng răng & Khử mùi</Link>
+                <div className="absolute top-full -left-[180px] pt-4 hidden group-hover/prod:block transition-all z-50">
+                  <div className="w-max bg-white rounded-2xl shadow-xl border border-gray-100 p-8 flex gap-12">
+                    {categories.map((category) => (
+                      <div key={category.id} className="flex flex-col min-w-[200px]">
+                        <Link 
+                          to={`/products#${category.id}`} 
+                          className="text-base font-bold text-gray-900 mb-4 hover:text-brand-800 flex items-center justify-between group/cat uppercase"
+                        >
+                          {t(category.title)}
+                          <ArrowRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover/cat:opacity-100 group-hover/cat:translate-x-0 transition-all text-brand-800" />
+                        </Link>
+                        <div className="flex flex-col space-y-3">
+                          {category.products?.map(product => (
+                            <Link 
+                              key={product.id} 
+                              to={`/product/${product.id}`}
+                              className="text-sm text-gray-600 hover:text-brand-800 font-medium transition-colors"
+                            >
+                              {t(product.name)}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -149,10 +168,30 @@ export default function Header() {
                     >
                       {link.name}
                     </NavLink>
-                    <div className="flex flex-col py-2 px-4 shadow-inner">
-                      <Link onClick={() => setMobileMenuOpen(false)} to="/products#khi-nieng" className="py-2 text-sm text-gray-600 hover:text-brand-800 font-medium">Chăm sóc khi niềng</Link>
-                      <Link onClick={() => setMobileMenuOpen(false)} to="/products#sau-nieng" className="py-2 text-sm text-gray-600 hover:text-brand-800 font-medium">Chăm sóc sau niềng (Duy trì)</Link>
-                      <Link onClick={() => setMobileMenuOpen(false)} to="/products#trang-rang-khu-mui" className="py-2 text-sm text-gray-600 hover:text-brand-800 font-medium">Làm trắng răng & Khử mùi</Link>
+                    <div className="flex flex-col py-2 px-4 shadow-inner space-y-4">
+                      {categories.map((category) => (
+                        <div key={category.id} className="flex flex-col">
+                          <Link 
+                            onClick={() => setMobileMenuOpen(false)} 
+                            to={`/products#${category.id}`} 
+                            className="py-1 text-sm font-bold text-gray-900 border-b border-gray-100 mb-2 uppercase"
+                          >
+                            {t(category.title)}
+                          </Link>
+                          <div className="flex flex-col space-y-2 pl-2">
+                            {category.products?.map(product => (
+                              <Link 
+                                key={product.id}
+                                onClick={() => setMobileMenuOpen(false)}
+                                to={`/product/${product.id}`}
+                                className="text-sm text-gray-600 hover:text-brand-800"
+                              >
+                                {t(product.name)}
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 ) : (

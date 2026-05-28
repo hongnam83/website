@@ -71,17 +71,17 @@ function ProductCard({ product }: { product: ProductDetail }) {
                 className={`w-6 h-6 rounded-full border-2 transition-all ${
                   safeVariantIndex === idx ? 'border-gray-900 scale-110' : 'border-transparent hover:scale-110'
                 } flex items-center justify-center`}
-                title={t(variant.name)}
+                title={t(variant?.name)}
               >
                 <span className={`w-full h-full rounded-full ${variant.colorClass} shadow-inner`}></span>
               </button>
             ))}
-            <span className="text-xs text-gray-500 ml-2 truncate">{t(product.variants[safeVariantIndex].name)}</span>
+            <span className="text-xs text-gray-500 ml-2 truncate">{t(product.variants[safeVariantIndex]?.name)}</span>
           </div>
         )}
         
         <div className="flex-grow flex flex-col justify-end">
-          <h5 className="text-lg font-bold text-gray-900 mb-2 truncate">{t(product.name)}</h5>
+          <h5 className="text-lg font-bold text-gray-900 mb-2 truncate">{t(product?.name)}</h5>
           <ul className="space-y-1 mb-4">
             {product.features?.slice(0, 2).map((feature, fIndex) => (
               <li key={fIndex} className="flex items-start text-sm text-gray-600">
@@ -158,8 +158,8 @@ export default function Products() {
               )}
 
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                {category.products.map((product, pIndex) => (
-                  <ProductCard key={pIndex} product={product} />
+                {category.products?.map((product, pIndex) => (
+                  <ProductCard key={product?.id || pIndex} product={product} />
                 ))}
               </div>
             </div>

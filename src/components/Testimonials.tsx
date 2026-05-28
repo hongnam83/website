@@ -26,8 +26,8 @@ const defaultImages = [
 const testimonials = allProducts.map((product, index) => ({
   content: defaultContents[index % defaultContents.length],
   image: defaultImages[index % defaultImages.length],
-  productId: product.id,
-  productName: product.name
+  productId: product?.id,
+  productName: product?.name
 }));
 
 export default function Testimonials() {
