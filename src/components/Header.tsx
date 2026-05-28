@@ -47,17 +47,40 @@ export default function Header() {
         {/* Desktop Nav */}
         <nav className="hidden lg:flex items-center gap-8 bg-white/70 backdrop-blur-md px-8 py-3 rounded-full shadow-sm border border-gray-100">
           {navLinks.map((link) => (
-            <NavLink
-              key={link.name}
-              to={link.href}
-              className={({ isActive }) => 
-                `text-sm font-semibold transition-colors hover:text-brand-800 ${
-                  isActive ? 'text-brand-800' : 'text-gray-600'
-                }`
-              }
-            >
-              {link.name}
-            </NavLink>
+            link.href === '/products' ? (
+              <div key={link.name} className="relative group/prod">
+                <NavLink
+                  to={link.href}
+                  className={({ isActive }) => 
+                    `flex items-center gap-1 text-sm font-semibold transition-colors hover:text-brand-800 ${
+                      isActive ? 'text-brand-800' : 'text-gray-600'
+                    }`
+                  }
+                >
+                  {link.name}
+                  <ChevronDown className="w-4 h-4 transition-transform group-hover/prod:rotate-180" />
+                </NavLink>
+                <div className="absolute top-full left-0 pt-4 hidden group-hover/prod:block transition-all z-50">
+                  <div className="w-56 bg-white rounded-xl shadow-lg border border-gray-100 py-2">
+                    <Link to="/products#khi-nieng" className="block px-4 py-2 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-800 font-medium">Chăm sóc khi niềng</Link>
+                    <Link to="/products#sau-nieng" className="block px-4 py-2 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-800 font-medium">Chăm sóc sau niềng (Duy trì)</Link>
+                    <Link to="/products#trang-rang-khu-mui" className="block px-4 py-2 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-800 font-medium">Làm trắng răng & Khử mùi</Link>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <NavLink
+                key={link.name}
+                to={link.href}
+                className={({ isActive }) => 
+                  `text-sm font-semibold transition-colors hover:text-brand-800 ${
+                    isActive ? 'text-brand-800' : 'text-gray-600'
+                  }`
+                }
+              >
+                {link.name}
+              </NavLink>
+            )
           ))}
         </nav>
 
@@ -110,21 +133,42 @@ export default function Header() {
 
         {/* Mobile Menu Overlay */}
         {mobileMenuOpen && (
-          <div className="absolute top-full left-0 right-0 bg-white shadow-xl border-t border-gray-100 py-4 px-4 lg:hidden h-screen flex flex-col">
+          <div className="absolute top-full left-0 right-0 bg-white shadow-xl border-t border-gray-100 py-4 px-4 lg:hidden h-screen flex flex-col min-h-screen overflow-y-auto pb-32">
             <div className="flex flex-col space-y-2">
               {navLinks.map((link) => (
-                <NavLink
-                  key={link.name}
-                  to={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={({ isActive }) => 
-                    `text-base font-semibold leading-6 p-3 rounded-xl transition-colors ${
-                      isActive ? 'bg-brand-50 text-brand-800' : 'text-gray-900 hover:bg-gray-50'
-                    }`
-                  }
-                >
-                  {link.name}
-                </NavLink>
+                link.href === '/products' ? (
+                  <div key={link.name} className="flex flex-col border border-gray-100 rounded-xl overflow-hidden bg-gray-50/50">
+                    <NavLink
+                      to={link.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={({ isActive }) => 
+                        `text-base font-semibold leading-6 p-3 transition-colors flex justify-between items-center ${
+                          isActive ? 'bg-brand-50 text-brand-800' : 'text-gray-900 bg-white hover:bg-gray-50'
+                        }`
+                      }
+                    >
+                      {link.name}
+                    </NavLink>
+                    <div className="flex flex-col py-2 px-4 shadow-inner">
+                      <Link onClick={() => setMobileMenuOpen(false)} to="/products#khi-nieng" className="py-2 text-sm text-gray-600 hover:text-brand-800 font-medium">Chăm sóc khi niềng</Link>
+                      <Link onClick={() => setMobileMenuOpen(false)} to="/products#sau-nieng" className="py-2 text-sm text-gray-600 hover:text-brand-800 font-medium">Chăm sóc sau niềng (Duy trì)</Link>
+                      <Link onClick={() => setMobileMenuOpen(false)} to="/products#trang-rang-khu-mui" className="py-2 text-sm text-gray-600 hover:text-brand-800 font-medium">Làm trắng răng & Khử mùi</Link>
+                    </div>
+                  </div>
+                ) : (
+                  <NavLink
+                    key={link.name}
+                    to={link.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={({ isActive }) => 
+                      `text-base font-semibold leading-6 p-3 rounded-xl transition-colors ${
+                        isActive ? 'bg-brand-50 text-brand-800' : 'text-gray-900 hover:bg-gray-50'
+                      }`
+                    }
+                  >
+                    {link.name}
+                  </NavLink>
+                )
               ))}
             </div>
           </div>

@@ -1,10 +1,27 @@
 import Products from '../components/Products';
 import { useSiteSettings } from '../contexts/SiteSettingsContext';
 import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 export default function ProductsPage() {
   const settings = useSiteSettings();
   const { t } = useTranslation();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      const id = location.hash.replace('#', '');
+      const element = document.getElementById(id);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [location]);
 
   return (
     <main className="pt-24 min-h-screen">

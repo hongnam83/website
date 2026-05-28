@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { db, collection, getDocs } from '../localDB';
@@ -25,9 +25,16 @@ export interface ProductDetail {
 function ProductCard({ product }: { product: ProductDetail }) {
   const { t } = useTranslation();
   const hasVariants = product.variants && product.variants.length > 0;
-  const [selectedVariant, setSelectedVariant] = useState(hasVariants ? 0 : -1);
+  // Always initialize to 0 to prevent out of bounds when component is reused with different props
+  const [selectedVariant, setSelectedVariant] = useState(0);
+  
+  // Safe bounded index for variant access
+  const safeVariantIndex = useMemo(() => {
+    if (!hasVariants || !product.variants) return 0;
+    return selectedVariant >= 0 && selectedVariant < product.variants.length ? selectedVariant : 0;
+  }, [selectedVariant, hasVariants, product.variants]);
 
-  const currentImage = hasVariants && product.variants ? product.variants[selectedVariant].image : product.image;
+  const currentImage = hasVariants && product.variants ? product.variants[safeVariantIndex].image : product.image;
 
   return (
     <motion.div
@@ -62,14 +69,14 @@ function ProductCard({ product }: { product: ProductDetail }) {
                   setSelectedVariant(idx);
                 }}
                 className={`w-6 h-6 rounded-full border-2 transition-all ${
-                  selectedVariant === idx ? 'border-gray-900 scale-110' : 'border-transparent hover:scale-110'
+                  safeVariantIndex === idx ? 'border-gray-900 scale-110' : 'border-transparent hover:scale-110'
                 } flex items-center justify-center`}
                 title={t(variant.name)}
               >
                 <span className={`w-full h-full rounded-full ${variant.colorClass} shadow-inner`}></span>
               </button>
             ))}
-            <span className="text-xs text-gray-500 ml-2 truncate">{t(product.variants[selectedVariant].name)}</span>
+            <span className="text-xs text-gray-500 ml-2 truncate">{t(product.variants[safeVariantIndex].name)}</span>
           </div>
         )}
         
@@ -129,7 +136,7 @@ export default function Products() {
 
         <div className="space-y-24">
           {categories.map((category, catIndex) => (
-            <div key={category.id} className="scroll-mt-24">
+            <div key={category.id} id={category.id} className="scroll-mt-32">
               <div className="mb-10 text-center md:text-left flex flex-col md:flex-row items-center md:items-end justify-between gap-4 border-b border-gray-200 pb-4">
                 <div>
                   <h4 className="text-2xl font-bold text-gray-900">{t(category.title)}</h4>

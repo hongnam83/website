@@ -1,6 +1,6 @@
 import { useParams, Link } from 'react-router-dom';
 import {ArrowLeft, CheckCircle2 } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import CTASection from '../components/CTASection';
 import { useTranslation } from 'react-i18next';
 import { db, collection, getDocs } from '../localDB';
@@ -39,14 +39,15 @@ export default function ProductDetailPage() {
   const hasVariants = product?.variants && product.variants.length > 0;
   const [selectedVariant, setSelectedVariant] = useState(0);
 
-  // set default variant if loaded
+  const safeVariantIndex = useMemo(() => {
+    if (!hasVariants || !product?.variants) return 0;
+    return selectedVariant >= 0 && selectedVariant < product.variants.length ? selectedVariant : 0;
+  }, [selectedVariant, hasVariants, product?.variants]);
+
+  // Optionally reset on product change if needed, but safeVariantIndex protects the render anyway
   useEffect(() => {
-     if(product?.variants && product.variants.length > 0) {
-        setSelectedVariant(0);
-     } else {
-        setSelectedVariant(-1);
-     }
-  }, [product]);
+     setSelectedVariant(0);
+  }, [product?.id]);
 
   if (loading) {
      return (
@@ -74,7 +75,7 @@ export default function ProductDetailPage() {
     );
   }
 
-  const currentImage = hasVariants && product.variants ? product.variants[selectedVariant]?.image : product.image;
+  const currentImage = hasVariants && product.variants ? product.variants[safeVariantIndex]?.image : product.image;
 
   return (
     <main className="pt-24 min-h-screen bg-gray-50 flex flex-col">
@@ -117,7 +118,7 @@ export default function ProductDetailPage() {
             
             {hasVariants && product.variants && (
                <div className="p-4 bg-brand-50 rounded-xl">
-                 <p className="text-brand-800 font-medium">{t("Đang chọn:")} <span className="font-bold">{t(product.variants[selectedVariant].name)}</span></p>
+                 <p className="text-brand-800 font-medium">{t("Đang chọn:")} <span className="font-bold">{t(product.variants[safeVariantIndex].name)}</span></p>
                </div>
             )}
           </div>
