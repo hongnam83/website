@@ -424,10 +424,17 @@ const GenericCollectionManager = ({ title, collectionName, fields }: any) => {
   const fetchItems = async () => {
     try {
       const snapshot = await getDocs(collection(db, collectionName));
-      const data = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+      let data = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+      
+      // Fallback for UI if DB empty
+      if (data.length === 0) {
+          if (collectionName === 'blogPosts') data = defaultBlogPosts;
+          // You could add other collection fallbacks here if needed
+      }
+      
       setItems(data);
     } catch(e) {
-      // console.error(e);
+      if (collectionName === 'blogPosts') setItems(defaultBlogPosts);
     } finally {
       setLoading(false);
     }
@@ -576,10 +583,15 @@ const CategoriesProductsManager = () => {
   const fetchCategories = async () => {
     try {
       const snapshot = await getDocs(collection(db, 'products'));
-      const data = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+      let data = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+      
+      if (data.length === 0) {
+          data = defaultCategories;
+      }
+      
       setCategories(data);
     } catch(e) {
-      // console.error(e);
+      setCategories(defaultCategories);
     } finally {
       setLoading(false);
     }
