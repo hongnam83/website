@@ -12,7 +12,6 @@ export default function AdminUsersManager() {
 
   const fetchUsers = async () => {
     try {
-      setLoading(true);
       const snapshot = await getDocs(collection(db, 'admins'));
       setUsers(snapshot.docs.map(d => ({ id: d.id, ...d.data() })));
     } catch(e) {

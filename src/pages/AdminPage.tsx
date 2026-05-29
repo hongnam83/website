@@ -423,7 +423,6 @@ const GenericCollectionManager = ({ title, collectionName, fields }: any) => {
 
   const fetchItems = async () => {
     try {
-      setLoading(true);
       const snapshot = await getDocs(collection(db, collectionName));
       const data = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
       setItems(data);
@@ -576,7 +575,6 @@ const CategoriesProductsManager = () => {
 
   const fetchCategories = async () => {
     try {
-      setLoading(true);
       const snapshot = await getDocs(collection(db, 'products'));
       const data = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
       setCategories(data);
