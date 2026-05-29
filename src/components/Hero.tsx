@@ -9,13 +9,13 @@ export default function Hero() {
   const settings = useSiteSettings();
 
   return (
-    <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-brand-50" id="home">
+    <section className="relative pt-16 pb-8 lg:pt-24 lg:pb-10 overflow-hidden bg-brand-50" id="home">
       {/* Abstract Background Element */}
       <div className="absolute bottom-0 right-0 translate-y-1/4 translate-x-1/4 w-[800px] h-[800px] bg-brand-200/50 rounded-full blur-3xl opacity-50 pointer-events-none" />
       <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/3 w-[600px] h-[600px] bg-brand-300/40 rounded-full blur-3xl opacity-50 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-6 items-center">
           
           {/* Content */}
           <motion.div 
@@ -24,22 +24,22 @@ export default function Hero() {
             transition={{ duration: 0.6 }}
             className="max-w-2xl"
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-100 text-brand-800 font-medium text-sm mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-100 text-brand-800 font-medium text-sm mb-4">
               <ShieldCheck className="w-4 h-4" />
-              <span>{t('Chuyên gia chăm sóc răng niềng', 'Chuyên gia chăm sóc răng niềng')}</span>
+              <span className="tracking-wide">{t('Chuyên gia chăm sóc răng niềng', 'Chuyên gia chăm sóc răng niềng')}</span>
             </div>
             
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 mb-6 leading-[1.1]">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 mb-4 leading-[1.1]">
               {t('Nụ Cười Hoàn Mỹ')} <br />
               <span className="text-gradient font-serif italic text-5xl md:text-6xl lg:text-7xl pr-2">{t('Dành Riêng Cho')}</span><br />
               {t('Team Niềng Răng')}
             </h1>
             
-            <p className="text-lg md:text-xl text-gray-600 mb-8 leading-relaxed max-w-lg">
+            <p className="text-lg md:text-xl text-gray-600 mb-6 leading-relaxed max-w-lg">
               {t('Giải pháp chăm sóc toàn diện từ FURANO. Đánh bay mảng bám, ngăn ngừa viêm lợi và giữ nụ cười tự tin trong suốt thai kỳ chỉnh nha của bạn.')}
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 mb-10">
+            <div className="flex flex-col sm:flex-row gap-4 mb-8">
               <Link
                 to="/products"
                 className="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-white bg-brand-800 hover:bg-brand-900 rounded-full transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
@@ -56,7 +56,7 @@ export default function Hero() {
             </div>
 
             {/* Social Proof Mini */}
-            <div className="flex items-center gap-4 pt-6 border-t border-gray-200/60">
+            <div className="flex items-center gap-4 pt-4 border-t border-gray-200/60">
               <div className="flex -space-x-3">
                 {[1, 2, 3, 4].map((i) => (
                   <img

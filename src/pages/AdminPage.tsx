@@ -49,7 +49,7 @@ const AdminLayout = ({ children, activeTab, setActiveTab, user, onLogout }: any)
             <h2 className="text-2xl font-bold text-brand-400">Furano Admin</h2>
           </div>
           <nav className="mt-4">
-            {['Dashboard', 'Site Settings', 'Categories & Products', 'Blog Posts', 'FAQs', 'Đánh giá khách hàng', 'Đánh giá sản phẩm', 'Admin Users'].map((tab) => (
+            {['Dashboard', 'Site Settings', 'Categories & Products', 'Blog Posts', 'FAQs', 'Admin Users'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -60,8 +60,6 @@ const AdminLayout = ({ children, activeTab, setActiveTab, user, onLogout }: any)
                 {tab === 'Categories & Products' && 'Danh mục & Sản phẩm'}
                 {tab === 'Blog Posts' && 'Bài viết Blog'}
                 {tab === 'FAQs' && 'Hỏi Đáp (FAQs)'}
-                {tab === 'Đánh giá khách hàng' && 'Đánh giá chung'}
-                {tab === 'Đánh giá sản phẩm' && 'Đánh giá sản phẩm'}
                 {tab === 'Admin Users' && 'Thành viên Quản trị'}
               </button>
             ))}
@@ -312,6 +310,86 @@ const ItemModal = ({ item, fields, onSave, onClose, isProduct = false }: any) =>
                       className="w-full px-3 py-2 border rounded-lg h-40 font-mono text-sm"
                      />
                   </div>
+                ) : field.type === 'reviews_editor' ? (
+                  <div className="space-y-4 border p-4 rounded-lg bg-gray-50">
+                     <p className="text-sm font-medium text-gray-900">Đánh giá khách hàng</p>
+                     {(val || []).map((review: any, idx: number) => (
+                        <div key={idx} className="p-4 border bg-white rounded-lg space-y-3 relative">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const newVals = [...(val || [])];
+                              newVals.splice(idx, 1);
+                              handleChange(field.name, newVals);
+                            }}
+                            className="absolute top-2 right-2 text-red-500 hover:text-red-700 text-sm font-medium"
+                          >Xóa</button>
+                          
+                          <input type="text" placeholder="Tên khách hàng" value={review.name || ''} 
+                            onChange={(e) => {
+                              const newVals = [...(val || [])];
+                              newVals[idx] = { ...newVals[idx], name: e.target.value };
+                              handleChange(field.name, newVals);
+                            }} className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-brand-500" />
+                            
+                          <div className="flex gap-4">
+                            <input type="text" placeholder="Thời gian (vd: Hôm nay)" value={review.date || ''} 
+                              onChange={(e) => {
+                                const newVals = [...(val || [])];
+                                newVals[idx] = { ...newVals[idx], date: e.target.value };
+                                handleChange(field.name, newVals);
+                              }} className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-brand-500" />
+
+                            <input type="number" min="1" max="5" placeholder="Số sao (1-5)" value={review.rating || 5} 
+                              onChange={(e) => {
+                                const newVals = [...(val || [])];
+                                newVals[idx] = { ...newVals[idx], rating: e.target.value };
+                                handleChange(field.name, newVals);
+                              }} className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-brand-500" />
+                          </div>
+
+                          <textarea placeholder="Nội dung đánh giá" value={review.comment || ''} 
+                            onChange={(e) => {
+                              const newVals = [...(val || [])];
+                              newVals[idx] = { ...newVals[idx], comment: e.target.value };
+                              handleChange(field.name, newVals);
+                            }} className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-brand-500 h-24" />
+                            
+                          <div className="flex flex-col gap-2">
+                             <input type="text" placeholder="URL Hình ảnh (tuỳ chọn)" value={review.image || ''}
+                                onChange={(e) => {
+                                  const newVals = [...(val || [])];
+                                  newVals[idx] = { ...newVals[idx], image: e.target.value };
+                                  handleChange(field.name, newVals);
+                                }} className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-brand-500" />
+                             
+                             <div className="flex gap-4 items-center">
+                               {review.image && <img src={review.image} className="w-16 h-16 object-cover rounded-lg border" />}
+                               <input type="file" accept="image/*" onChange={(e) => {
+                                 const file = e.target.files?.[0];
+                                 if (file) {
+                                    const reader = new FileReader();
+                                    reader.onloadend = () => {
+                                        const newVals = [...(val || [])];
+                                        newVals[idx] = { ...newVals[idx], image: reader.result };
+                                        handleChange(field.name, newVals);
+                                    };
+                                    reader.readAsDataURL(file);
+                                 }
+                               }} className="text-sm" />
+                             </div>
+                          </div>
+                        </div>
+                     ))}
+                     <button
+                        type="button"
+                        onClick={() => {
+                          const newVals = [...(val || []), { name: '', rating: 5, date: '', comment: '', image: '' }];
+                          handleChange(field.name, newVals);
+                        }}
+                        className="w-full py-2 border-2 border-dashed border-brand-300 rounded-lg text-brand-600 hover:bg-brand-50 font-medium"
+                     >+ Thêm Đánh Giá</button>
+                  </div>
                 ) : (
                   <input
                     type={field.type || 'text'}
@@ -489,7 +567,7 @@ const CategoriesProductsManager = () => {
   const [categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingCategory, setEditingCategory] = useState<any>(null);
-  const [selectedCategoryIndex, setSelectedCategoryIndex] = useState<number | null>(null);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
   const [editingProduct, setEditingProduct] = useState<any>(null);
 
   useEffect(() => {
@@ -527,19 +605,24 @@ const CategoriesProductsManager = () => {
   const handleDeleteCategory = async (id: string) => {
     if(!confirm("Xóa danh mục này sẽ xóa toàn bộ sản phẩm bên trong. Tiếp tục?")) return;
     await deleteDoc(doc(db, 'products', id));
-    if(selectedCategoryIndex !== null && categories[selectedCategoryIndex]?.id === id) {
-      setSelectedCategoryIndex(null);
+    if(selectedCategoryId === id) {
+      setSelectedCategoryId(null);
     }
     fetchCategories();
   }
 
   const handleSaveProduct = async (prodData: any) => {
-    if (selectedCategoryIndex === null) return;
-    const cat = { ...categories[selectedCategoryIndex] };
-    const pIndex = cat.products.findIndex((p: any) => p.id === prodData.id);
+    if (!selectedCategoryId) return;
+    const currentCat = categories.find(c => c.id === selectedCategoryId);
+    if (!currentCat) return;
+    const cat = { ...currentCat };
+    if (!cat.products) cat.products = [];
+
+    const pIndex = cat.products.findIndex((p: any) => p.id === (editingProduct?.id || prodData.id));
     
     if (pIndex > -1) {
-      cat.products[pIndex] = prodData; // Update
+      const prodId = prodData.id || editingProduct.id;
+      cat.products[pIndex] = { ...prodData, id: prodId }; // Update
     } else {
       cat.products.push({ ...prodData, id: prodData.id || Date.now().toString() }); // Add
     }
@@ -554,10 +637,13 @@ const CategoriesProductsManager = () => {
   };
 
   const handleDeleteProduct = async (prodId: string) => {
-     if (selectedCategoryIndex === null) return;
+     if (!selectedCategoryId) return;
+     const currentCat = categories.find(c => c.id === selectedCategoryId);
+     if (!currentCat) return;
      if(!confirm("Xóa sản phẩm này?")) return;
-     const cat = { ...categories[selectedCategoryIndex] };
-     cat.products = cat.products.filter((p: any) => p.id !== prodId);
+     
+     const cat = { ...currentCat };
+     cat.products = (cat.products || []).filter((p: any) => p.id !== prodId);
 
      try {
        await setDoc(doc(db, 'products', cat.id), cat, { merge: true });
@@ -584,7 +670,7 @@ const CategoriesProductsManager = () => {
     { name: 'ingredients', label: 'Thành phần (Mỗi dòng 1 cái)', type: 'array' },
     { name: 'materials', label: 'Chất liệu (Mỗi dòng 1 cái)', type: 'array' },
     { name: 'specs', label: 'Thông số kỹ thuật', type: 'text' },
-    { name: 'variants', label: 'Phân loại (JSON)', type: 'variants' }
+    { name: 'reviews', label: 'Đánh giá khách hàng', type: 'reviews_editor' }
   ];
 
   if (loading) return <AdminLoadingSkeleton />;
@@ -601,8 +687,8 @@ const CategoriesProductsManager = () => {
            {categories.map((cat, idx) => (
              <div 
                key={cat.id} 
-               className={`p-3 rounded-lg border cursor-pointer hover:bg-gray-50 flex justify-between items-center ${selectedCategoryIndex === idx ? 'border-brand-500 bg-brand-50' : ''}`}
-               onClick={() => setSelectedCategoryIndex(idx)}
+               className={`p-3 rounded-lg border cursor-pointer hover:bg-gray-50 flex justify-between items-center ${selectedCategoryId === cat.id ? 'border-brand-500 bg-brand-50' : ''}`}
+               onClick={() => setSelectedCategoryId(cat.id)}
              >
                <span className="font-medium text-sm">{cat.title} ({cat.products?.length || 0})</span>
                <div className="flex gap-1" onClick={e => e.stopPropagation()}>
@@ -616,32 +702,36 @@ const CategoriesProductsManager = () => {
 
       {/* Products Column */}
       <div className="w-2/3 pl-2">
-         {selectedCategoryIndex !== null ? (
+         {selectedCategoryId ? (() => {
+            const selectedCat = categories.find(c => c.id === selectedCategoryId);
+            if (!selectedCat) return null;
+            return (
             <div>
                <div className="flex justify-between items-center mb-4">
-                 <h3 className="text-xl font-bold">Sản phẩm: {categories[selectedCategoryIndex].title}</h3>
+                 <h3 className="text-xl font-bold">Sản phẩm: {selectedCat.title}</h3>
                  <button onClick={() => setEditingProduct({})} className="px-3 py-1.5 text-sm bg-brand-600 text-white rounded-lg flex items-center gap-2"><Plus className="w-4 h-4" /> Thêm SP</button>
                </div>
                <div className="grid grid-cols-2 gap-4">
-                  {categories[selectedCategoryIndex].products?.map((p: any) => (
-                    <div key={p.id} className="border rounded-xl p-3 flex gap-4 bg-white relative group">
+                  {selectedCat.products?.map((p: any) => (
+                    <div key={p.id} onClick={() => setEditingProduct(p)} className="border rounded-xl p-3 flex gap-4 bg-white relative group cursor-pointer hover:border-brand-500 hover:shadow-md transition-all">
                        <img src={p.image} className="w-20 h-20 object-cover rounded-lg border bg-gray-50" />
                        <div className="flex-1">
                           <h4 className="font-bold text-sm mb-1 line-clamp-2">{p.name}</h4>
                           <p className="text-xs text-gray-500 line-clamp-1">{p.id}</p>
                        </div>
-                       <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1 bg-white shadow-sm rounded-md border p-0.5">
+                       <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1 bg-white shadow-sm rounded-md border p-0.5" onClick={(e) => e.stopPropagation()}>
                          <button onClick={() => setEditingProduct(p)} className="p-1 hover:bg-gray-100 rounded text-blue-600"><Pencil className="w-3.5 h-3.5"/></button>
                          <button onClick={() => handleDeleteProduct(p.id)} className="p-1 hover:bg-gray-100 rounded text-red-600"><Trash2 className="w-3.5 h-3.5"/></button>
                        </div>
                     </div>
                   ))}
-                  {(!categories[selectedCategoryIndex].products || categories[selectedCategoryIndex].products.length === 0) && (
+                  {(!selectedCat.products || selectedCat.products.length === 0) && (
                      <p className="col-span-2 text-gray-500 italic">Chưa có sản phẩm nào. Hãy thêm mới!</p>
                   )}
                </div>
             </div>
-         ) : (
+            );
+         })() : (
             <div className="flex flex-col items-center justify-center h-full text-gray-400">
                <p>Chọn một danh mục để xem sản phẩm</p>
             </div>
@@ -682,6 +772,9 @@ const LoginScreen = ({ onLogin }: { onLogin: (user: User) => void }) => {
     setError('');
     setLoading(true);
     try {
+      if (!isReset) {
+        localStorage.setItem('adminLoginTime', Date.now().toString());
+      }
       if (isReset) {
         await sendPasswordResetEmail(auth, email);
         alert('Đã gửi email khôi phục mật khẩu. Vui lòng kiểm tra hộp thư của bạn.');
@@ -778,6 +871,20 @@ export default function AdminPage() {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        const loginTime = localStorage.getItem('adminLoginTime');
+        if (loginTime) {
+          const hoursPassed = (Date.now() - parseInt(loginTime)) / (1000 * 60 * 60);
+          if (hoursPassed >= 24) {
+            signOut(auth);
+            localStorage.removeItem('adminLoginTime');
+            return;
+          }
+        } else {
+           // Set it if missing
+           localStorage.setItem('adminLoginTime', Date.now().toString());
+        }
+      }
       setUser(currentUser);
       setAuthLoading(false);
     });
@@ -824,27 +931,6 @@ export default function AdminPage() {
         <GenericCollectionManager title="Câu Hỏi Thường Gặp" collectionName="faqs" fields={[
           { name: 'question', label: 'Câu hỏi', type: 'text' },
           { name: 'answer', label: 'Câu trả lời', type: 'textarea' }
-        ]} />
-      </TabPanel>
-
-      <TabPanel active={activeTab === 'Đánh giá khách hàng'}>
-        <GenericCollectionManager title="Đánh giá chung" collectionName="testimonials" fields={[
-          { name: 'name', label: 'Tên khách hàng', type: 'text' },
-          { name: 'role', label: 'Vai trò (VD: Đã mua hàng)', type: 'text' },
-          { name: 'product', label: 'Sản phẩm', type: 'text' },
-          { name: 'stars', label: 'Số sao (1-5)', type: 'number' },
-          { name: 'content', label: 'Nội dung nhận xét', type: 'textarea' },
-          { name: 'image', label: 'Hình ảnh khách hàng', type: 'image' }
-        ]} />
-      </TabPanel>
-
-      <TabPanel active={activeTab === 'Đánh giá sản phẩm'}>
-        <GenericCollectionManager title="Đánh giá sản phẩm" collectionName="productReviews" fields={[
-          { name: 'productId', label: 'ID Sản phẩm (vd: kem-danh-rang-ortho-sabai)', type: 'text', required: true },
-          { name: 'authorName', label: 'Tên khách hàng', type: 'text', required: true },
-          { name: 'date', label: 'Thời gian (vd: 2026-05-28)', type: 'text', required: true },
-          { name: 'rating', label: 'Số sao (1-5)', type: 'number', required: true, defaultValue: 5 },
-          { name: 'comment', label: 'Nội dung nhận xét', type: 'textarea', required: true }
         ]} />
       </TabPanel>
 

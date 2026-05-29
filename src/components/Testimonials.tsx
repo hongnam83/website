@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'motion/react';
-import { Star, Quote, ArrowRight } from 'lucide-react';
+import { Star, Quote, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
@@ -72,7 +72,7 @@ export default function Testimonials() {
             </AnimatePresence>
           </div>
 
-          <div className="w-full lg:w-1/2 relative min-h-[350px] md:min-h-[400px]">
+          <div className="w-full lg:w-1/2 relative min-h-[350px] lg:min-h-[400px] flex">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentIndex}
@@ -80,30 +80,46 @@ export default function Testimonials() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -50 }}
                 transition={{ duration: 0.5 }}
-                className="bg-white/10 backdrop-blur-lg border border-white/20 p-8 md:p-12 rounded-[2rem] relative flex flex-col justify-center h-full absolute inset-0"
+                className="bg-white/10 backdrop-blur-lg border border-white/20 p-6 md:p-8 rounded-[2rem] relative flex flex-col justify-center w-full"
               >
-                <Quote className="absolute top-8 right-8 w-16 h-16 text-white/5" strokeWidth={1} />
+                <Quote className="absolute top-6 right-6 w-12 h-12 text-white/5" strokeWidth={1} />
                 
-                <div className="flex items-center gap-1 mb-6 text-amber-400">
+                <div className="flex items-center gap-1 mb-4 text-amber-400">
                   {[...Array(5)].map((_, index) => (
-                    <Star key={index} className="w-6 h-6 fill-current" />
+                    <Star key={index} className="w-5 h-5 fill-current" />
                   ))}
                 </div>
                 
-                <p className="text-brand-50 text-xl md:text-2xl leading-relaxed italic relative z-10 flex-grow">
+                <p className="text-brand-50 text-lg md:text-xl leading-relaxed italic relative z-10 flex-grow">
                   "{t(testimonials[currentIndex].content)}"
                 </p>
 
-                <div className="mt-6 flex flex-col xl:flex-row items-start xl:items-center justify-between gap-6 relative z-10">
-                  <div className="flex items-center gap-2 flex-shrink-0">
-                    {testimonials.map((_, i) => (
-                      <button 
-                        key={i} 
-                        onClick={() => setCurrentIndex(i)}
-                        className={`h-2 rounded-full transition-all duration-300 ${i === currentIndex ? 'w-8 bg-brand-400' : 'w-2 bg-white/30 hover:bg-white/50'}`}
-                        aria-label={`Nhận xét ${i + 1}`}
-                      />
-                    ))}
+                <div className="mt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 relative z-10">
+                  <div className="flex items-center gap-4 flex-shrink-0">
+                    <button 
+                      onClick={() => setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length)}
+                      className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+                      aria-label="Xem nhận xét trước"
+                    >
+                      <ChevronLeft className="w-5 h-5 text-white" />
+                    </button>
+                    <div className="flex items-center gap-2">
+                      {testimonials.map((_, i) => (
+                        <button 
+                          key={i} 
+                          onClick={() => setCurrentIndex(i)}
+                          className={`h-2 rounded-full transition-all duration-300 ${i === currentIndex ? 'w-8 bg-brand-400' : 'w-2 bg-white/30 hover:bg-white/50'}`}
+                          aria-label={`Nhận xét ${i + 1}`}
+                        />
+                      ))}
+                    </div>
+                    <button 
+                      onClick={() => setCurrentIndex((prev) => (prev + 1) % testimonials.length)}
+                      className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+                      aria-label="Xem nhận xét tiếp theo"
+                    >
+                      <ChevronRight className="w-5 h-5 text-white" />
+                    </button>
                   </div>
 
                   <Link 

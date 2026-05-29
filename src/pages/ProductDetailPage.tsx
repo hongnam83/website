@@ -207,7 +207,7 @@ export default function ProductDetailPage() {
               </button>
             </div>
             
-            <ProductReviews productId={product.id} />
+            <ProductReviews reviews={product.reviews} />
           </div>
         </div>
       </div>
