@@ -42,22 +42,23 @@ export default function Testimonials() {
   }, []);
 
   return (
-    <section className="py-24 bg-brand-900 text-white overflow-hidden relative" id="testimonials">
+    <>
+    <section className="py-12 md:py-16 lg:py-20 bg-brand-900 text-white overflow-hidden relative" id="testimonials">
       <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/noise-pattern-with-subtle-cross-lines.png')] opacity-10"></div>
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         {/* Tiêu đề nằm trên cùng */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
+        <div className="text-center max-w-2xl mx-auto mb-10">
           <h2 className="text-brand-300 font-semibold tracking-wider uppercase text-sm mb-3">{t("Hơn cả sự hài lòng")}</h2>
-          <h3 className="text-4xl md:text-5xl font-bold leading-tight">
-            {t("Lời tâm tình từ")} <br /> <span className="font-serif italic font-normal text-brand-100">{t("Đồng Niềng")}</span>
+          <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+            {t("Lời tâm tình từ")} <br className="hidden md:block" /> <span className="font-serif italic font-normal text-brand-100">{t("Đồng Niềng")}</span>
           </h3>
         </div>
 
         {/* Bố cục 5/5 -> 1/2 và 1/2 */}
-        <div className="flex flex-col lg:flex-row items-stretch gap-8 lg:gap-12 w-full max-w-6xl mx-auto">
+        <div className="flex flex-col lg:flex-row items-stretch gap-6 w-full max-w-6xl mx-auto">
           
-          <div className="w-full lg:w-1/2 relative min-h-[350px] md:min-h-[400px] rounded-[2rem] overflow-hidden">
+          <div className="w-full lg:w-1/2 relative min-h-[300px] lg:min-h-[380px] rounded-[2rem] overflow-hidden">
             <AnimatePresence mode="wait">
               <motion.img
                 key={currentIndex}
@@ -72,7 +73,7 @@ export default function Testimonials() {
             </AnimatePresence>
           </div>
 
-          <div className="w-full lg:w-1/2 relative min-h-[350px] lg:min-h-[400px] flex">
+          <div className="w-full lg:w-1/2 relative min-h-[300px] lg:min-h-[380px] flex">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentIndex}
@@ -139,5 +140,15 @@ export default function Testimonials() {
         </div>
       </div>
     </section>
+    <div className="py-12 bg-white flex justify-center w-full relative z-10">
+      <Link
+        to="/products"
+        className="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-gray-900 bg-amber-400 hover:bg-amber-300 rounded-full transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 transform duration-200 uppercase tracking-wide gap-2"
+      >
+        {t('Khám phá thêm')}
+        <ArrowRight className="w-5 h-5" />
+      </Link>
+    </div>
+    </>
   );
 }
