@@ -1,8 +1,9 @@
+'use client';
 import { motion } from 'motion/react';
 import { ArrowRight, Star, ShieldCheck } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useSiteSettings } from '../contexts/SiteSettingsContext';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 export default function Hero() {
   const { t } = useTranslation();
@@ -41,7 +42,7 @@ export default function Hero() {
             
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
               <Link
-                to="/products"
+                href="/products"
                 className="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-white bg-brand-800 hover:bg-brand-900 rounded-full transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
               >
                 {t('Xem Danh Mục Sản Phẩm', 'Xem Danh Mục Sản Phẩm')}

@@ -1,8 +1,9 @@
+'use client';
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Clock, ArrowRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { db, collection, getDocs } from '../localDB';
 import { useSiteSettings } from '../contexts/SiteSettingsContext';
 import { blogPosts as defaultBlogPosts } from '../data/blogPosts';
@@ -64,7 +65,7 @@ export default function BlogPage() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {blogPosts.slice(0, visibleCount).map((post, index) => (
-            <Link to={`/blog/${post.id}`} key={post.id} className="block group cursor-pointer h-full">
+            <Link href={`/blog/${post.id}`} key={post.id} className="block group cursor-pointer h-full">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

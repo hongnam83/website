@@ -1,3 +1,4 @@
+'use client';
 import FAQ from '../components/FAQ';
 import CTASection from '../components/CTASection';
 

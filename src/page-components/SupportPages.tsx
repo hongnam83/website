@@ -1,6 +1,7 @@
+'use client';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 const PageLayout = ({ title, children }: { title: string, children: React.ReactNode }) => {
   const { t } = useTranslation();
@@ -8,7 +9,7 @@ const PageLayout = ({ title, children }: { title: string, children: React.ReactN
   return (
     <div className="min-h-screen pt-32 pb-24 bg-gray-50 flex items-center justify-center">
       <div className="max-w-3xl w-full px-4 sm:px-6 lg:px-8">
-        <Link to="/" className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-brand-800 mb-8 transition-colors">
+        <Link href="/" className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-brand-800 mb-8 transition-colors">
           <ArrowLeft className="w-4 h-4 mr-2" />
           {t("Quay lại trang chủ")}
         </Link>
@@ -104,7 +105,7 @@ export const OrderTrackingPage = () => {
             </button>
           </div>
           <div className="mt-6">
-            <Link to="/" className="text-sm text-brand-800 hover:underline">
+            <Link href="/" className="text-sm text-brand-800 hover:underline">
               {t("Quay lại trang chủ")}
             </Link>
           </div>

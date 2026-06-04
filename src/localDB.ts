@@ -53,7 +53,7 @@ export const getDocs = async (collectionRef: any) => {
   await delay(300);
   try {
     const res = await fetch(`/api/db/${collectionRef.path}`);
-    let data = [];
+    let data: any[] = [];
     if (res.ok) {
         data = await res.json();
     }

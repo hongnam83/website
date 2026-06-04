@@ -1,6 +1,7 @@
+'use client';
 import { Facebook, Instagram, Phone, Mail, MapPin } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import FuranoLogo from './FuranoLogo';
 import { useState, useEffect } from 'react';
 import { db, doc, getDoc } from '../localDB';
@@ -31,12 +32,12 @@ export default function Footer() {
     <footer className="bg-brand-50 text-gray-600 pt-20 pb-10 border-t border-brand-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-16">
-          
+
           {/* Brand Info */}
           <div className="lg:col-span-1">
-            <a href="#" className="flex items-center mb-6">
+            <Link href="/" className="flex items-center mb-6">
               <FuranoLogo className="w-auto h-12" />
-            </a>
+            </Link>
             <p className="text-sm leading-relaxed mb-6">
               {t(settings.footerDescription || "Thương hiệu dược mỹ phẩm hàng đầu cung cấp giải pháp chăm sóc toàn diện chuẩn y khoa thiết kế riêng cho người niềng răng tại Việt Nam.")}
             </p>
@@ -76,11 +77,11 @@ export default function Footer() {
           <div>
             <h4 className="text-gray-900 font-bold mb-6 text-lg">{t("Hỗ Trợ Khách Hàng")}</h4>
             <ul className="space-y-3 text-sm flex flex-col">
-              <li><Link to="/shipping-policy" className="hover:text-brand-800 transition-colors">{t("Chính sách vận chuyển")}</Link></li>
-              <li><Link to="/return-policy" className="hover:text-brand-800 transition-colors">{t("Chính sách đổi trả & hoàn tiền")}</Link></li>
-              <li><Link to="/privacy-policy" className="hover:text-brand-800 transition-colors">{t("Chính sách bảo mật thông tin")}</Link></li>
-              <li><Link to="/shopping-guide" className="hover:text-brand-800 transition-colors">{t("Hướng dẫn mua hàng")}</Link></li>
-              <li><Link to="/order-tracking" className="hover:text-brand-800 transition-colors">{t("Tra cứu đơn hàng")}</Link></li>
+              <li><Link href="/shipping-policy" className="hover:text-brand-800 transition-colors">{t("Chính sách vận chuyển")}</Link></li>
+              <li><Link href="/return-policy" className="hover:text-brand-800 transition-colors">{t("Chính sách đổi trả & hoàn tiền")}</Link></li>
+              <li><Link href="/privacy-policy" className="hover:text-brand-800 transition-colors">{t("Chính sách bảo mật thông tin")}</Link></li>
+              <li><Link href="/shopping-guide" className="hover:text-brand-800 transition-colors">{t("Hướng dẫn mua hàng")}</Link></li>
+              <li><Link href="/order-tracking" className="hover:text-brand-800 transition-colors">{t("Tra cứu đơn hàng")}</Link></li>
             </ul>
           </div>
 
@@ -88,9 +89,9 @@ export default function Footer() {
           <div>
             <h4 className="text-gray-900 font-bold mb-6 text-lg">{t("Sản Phẩm")}</h4>
             <ul className="space-y-3 text-sm flex flex-col">
-              <li><Link to="/products" className="hover:text-brand-800 transition-colors">{t("Chăm Sóc Khi Niềng")}</Link></li>
-              <li><Link to="/products" className="hover:text-brand-800 transition-colors">{t("Chăm Sóc Sau Niềng (Duy Trì)")}</Link></li>
-              <li><Link to="/products" className="hover:text-brand-800 transition-colors">{t("Trắng Răng & Khử Mùi")}</Link></li>
+              <li><Link href="/products" className="hover:text-brand-800 transition-colors">{t("Chăm Sóc Khi Niềng")}</Link></li>
+              <li><Link href="/products" className="hover:text-brand-800 transition-colors">{t("Chăm Sóc Sau Niềng (Duy Trì)")}</Link></li>
+              <li><Link href="/products" className="hover:text-brand-800 transition-colors">{t("Trắng Răng & Khử Mùi")}</Link></li>
             </ul>
           </div>
 
@@ -99,7 +100,6 @@ export default function Footer() {
         <div className="pt-8 border-t border-brand-200 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
           <p>&copy; {new Date().getFullYear()} {t("CÔNG TY TNHH FURANO VN. All rights reserved.")}</p>
           <div className="flex gap-2 items-center">
-            {/* Payment methods mock */}
             <div className="px-2 py-1 bg-white rounded text-gray-600 font-bold text-[10px] shadow-sm">VISA</div>
             <div className="px-2 py-1 bg-white rounded text-gray-600 font-bold text-[10px] shadow-sm">Mastercard</div>
             <div className="px-2 py-1 bg-white rounded text-gray-600 font-bold text-[10px] shadow-sm">MoMo</div>

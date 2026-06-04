@@ -1,4 +1,6 @@
-import { Link, NavLink } from 'react-router-dom';
+'use client';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Menu, X, ChevronDown, ArrowRight } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -7,6 +9,7 @@ import FuranoLogo from './FuranoLogo';
 
 export default function Header() {
   const { t, i18n } = useTranslation();
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
@@ -36,8 +39,8 @@ export default function Header() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
         {/* Logo */}
-        <Link 
-          to="/"
+        <Link
+          href="/"
           className="flex items-center z-50 group"
           onClick={() => setMobileMenuOpen(false)}
         >
@@ -49,23 +52,21 @@ export default function Header() {
           {navLinks.map((link) => (
             link.href === '/products' ? (
               <div key={link.name} className="relative group/prod">
-                <NavLink
-                  to={link.href}
-                  className={({ isActive }) => 
-                    `flex items-center gap-1 text-sm font-semibold transition-colors hover:text-brand-800 ${
-                      isActive ? 'text-brand-800' : 'text-gray-600'
-                    }`
-                  }
+                <Link
+                  href={link.href}
+                  className={`flex items-center gap-1 text-sm font-semibold transition-colors hover:text-brand-800 ${
+                    pathname === link.href ? 'text-brand-800' : 'text-gray-600'
+                  }`}
                 >
                   {link.name}
                   <ChevronDown className="w-4 h-4 transition-transform group-hover/prod:rotate-180" />
-                </NavLink>
+                </Link>
                 <div className="absolute top-full -left-[180px] pt-4 hidden group-hover/prod:block transition-all z-50">
                   <div className="w-max bg-white rounded-2xl shadow-xl border border-gray-100 p-8 flex gap-12">
                     {categories.map((category) => (
                       <div key={category.id} className="flex flex-col min-w-[200px]">
-                        <Link 
-                          to={`/products#${category.id}`} 
+                        <Link
+                          href={`/products#${category.id}`}
                           className="text-base font-bold text-gray-900 mb-4 hover:text-brand-800 flex items-center justify-between group/cat uppercase"
                         >
                           {t(category.title)}
@@ -73,9 +74,9 @@ export default function Header() {
                         </Link>
                         <div className="flex flex-col space-y-3">
                           {category.products?.map(product => (
-                            <Link 
-                              key={product.id} 
-                              to={`/product/${product.id}`}
+                            <Link
+                              key={product.id}
+                              href={`/product/${product.id}`}
                               className="text-sm text-gray-600 hover:text-brand-800 font-medium transition-colors"
                             >
                               {t(product.name)}
@@ -88,17 +89,15 @@ export default function Header() {
                 </div>
               </div>
             ) : (
-              <NavLink
+              <Link
                 key={link.name}
-                to={link.href}
-                className={({ isActive }) => 
-                  `text-sm font-semibold transition-colors hover:text-brand-800 ${
-                    isActive ? 'text-brand-800' : 'text-gray-600'
-                  }`
-                }
+                href={link.href}
+                className={`text-sm font-semibold transition-colors hover:text-brand-800 ${
+                  pathname === link.href ? 'text-brand-800' : 'text-gray-600'
+                }`}
               >
                 {link.name}
-              </NavLink>
+              </Link>
             )
           ))}
         </nav>
@@ -107,31 +106,30 @@ export default function Header() {
         <div className="flex items-center gap-2 md:gap-4 z-50">
           {/* Language Switcher */}
           <div className="relative">
-            <button 
+            <button
               onClick={() => setLangDropdownOpen(!langDropdownOpen)}
               onBlur={() => setTimeout(() => setLangDropdownOpen(false), 200)}
               className="flex items-center gap-1.5 px-3 py-2 text-sm font-semibold text-gray-700 bg-white/50 hover:bg-white rounded-full transition-colors shadow-sm"
             >
-              <img 
-                src={currentLang === 'VN' ? "https://flagcdn.com/w20/vn.png" : "https://flagcdn.com/w20/gb.png"} 
-                alt={currentLang} 
+              <img
+                src={currentLang === 'VN' ? "https://flagcdn.com/w20/vn.png" : "https://flagcdn.com/w20/gb.png"}
+                alt={currentLang}
                 className="w-5 h-auto rounded-sm"
               />
               <span className="hidden md:inline">{currentLang}</span>
               <ChevronDown className={`w-4 h-4 transition-transform ${langDropdownOpen ? 'rotate-180' : ''}`} />
             </button>
 
-            {/* Dropdown menu */}
             {langDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-32 bg-white rounded-xl shadow-lg border border-gray-100 py-2 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2">
-                <button 
+              <div className="absolute right-0 mt-2 w-32 bg-white rounded-xl shadow-lg border border-gray-100 py-2 overflow-hidden z-50">
+                <button
                   className={`w-full flex items-center gap-3 px-4 py-2 text-sm text-left hover:bg-gray-50 transition-colors ${currentLang === 'VN' ? 'font-bold text-brand-800 bg-brand-50/50' : 'text-gray-700'}`}
                   onClick={() => { setCurrentLang('VN'); i18n.changeLanguage('vi'); setLangDropdownOpen(false); }}
                 >
                   <img src="https://flagcdn.com/w20/vn.png" alt="VN" className="w-5 h-auto rounded-sm" />
                   Tiếng Việt
                 </button>
-                <button 
+                <button
                   className={`w-full flex items-center gap-3 px-4 py-2 text-sm text-left hover:bg-gray-50 transition-colors ${currentLang === 'EN' ? 'font-bold text-brand-800 bg-brand-50/50' : 'text-gray-700'}`}
                   onClick={() => { setCurrentLang('EN'); i18n.changeLanguage('en'); setLangDropdownOpen(false); }}
                 >
@@ -157,33 +155,31 @@ export default function Header() {
               {navLinks.map((link) => (
                 link.href === '/products' ? (
                   <div key={link.name} className="flex flex-col border border-gray-100 rounded-xl overflow-hidden bg-gray-50/50">
-                    <NavLink
-                      to={link.href}
+                    <Link
+                      href={link.href}
                       onClick={() => setMobileMenuOpen(false)}
-                      className={({ isActive }) => 
-                        `text-base font-semibold leading-6 p-3 transition-colors flex justify-between items-center ${
-                          isActive ? 'bg-brand-50 text-brand-800' : 'text-gray-900 bg-white hover:bg-gray-50'
-                        }`
-                      }
+                      className={`text-base font-semibold leading-6 p-3 transition-colors flex justify-between items-center ${
+                        pathname === link.href ? 'bg-brand-50 text-brand-800' : 'text-gray-900 bg-white hover:bg-gray-50'
+                      }`}
                     >
                       {link.name}
-                    </NavLink>
+                    </Link>
                     <div className="flex flex-col py-2 px-4 shadow-inner space-y-4">
                       {categories.map((category) => (
                         <div key={category.id} className="flex flex-col">
-                          <Link 
-                            onClick={() => setMobileMenuOpen(false)} 
-                            to={`/products#${category.id}`} 
+                          <Link
+                            onClick={() => setMobileMenuOpen(false)}
+                            href={`/products#${category.id}`}
                             className="py-1 text-sm font-bold text-gray-900 border-b border-gray-100 mb-2 uppercase"
                           >
                             {t(category.title)}
                           </Link>
                           <div className="flex flex-col space-y-2 pl-2">
                             {category.products?.map(product => (
-                              <Link 
+                              <Link
                                 key={product.id}
                                 onClick={() => setMobileMenuOpen(false)}
-                                to={`/product/${product.id}`}
+                                href={`/product/${product.id}`}
                                 className="text-sm text-gray-600 hover:text-brand-800"
                               >
                                 {t(product.name)}
@@ -195,18 +191,16 @@ export default function Header() {
                     </div>
                   </div>
                 ) : (
-                  <NavLink
+                  <Link
                     key={link.name}
-                    to={link.href}
+                    href={link.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={({ isActive }) => 
-                      `text-base font-semibold leading-6 p-3 rounded-xl transition-colors ${
-                        isActive ? 'bg-brand-50 text-brand-800' : 'text-gray-900 hover:bg-gray-50'
-                      }`
-                    }
+                    className={`text-base font-semibold leading-6 p-3 rounded-xl transition-colors ${
+                      pathname === link.href ? 'bg-brand-50 text-brand-800' : 'text-gray-900 hover:bg-gray-50'
+                    }`}
                   >
                     {link.name}
-                  </NavLink>
+                  </Link>
                 )
               ))}
             </div>

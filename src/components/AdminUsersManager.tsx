@@ -1,3 +1,4 @@
+'use client';
 import { useState, useEffect } from 'react';
 import { db, collection, getDocs, doc, setDoc, deleteDoc, signInWithEmailAndPassword, signOut } from '../localDB';
 import { Trash2, Plus, X } from 'lucide-react';

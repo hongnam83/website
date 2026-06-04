@@ -1384,5 +1384,11 @@
       "question": "FURANO có hỗ trợ tư vấn chăm sóc cá nhân không?",
       "answer": "Có. Đội ngũ chuyên viên của FURANO luôn sẵn sàng hỗ trợ bạn theo dõi tình trạng răng miệng và thiết kế chu trình chăm sóc riêng biệt. Hãy liên hệ với chúng tôi để được tư vấn miễn phí."
     }
+  ],
+  "admins": [
+    {
+      "id": "1",
+      "email": "sonnt.credit@gmail.com"
+    }
   ]
 }

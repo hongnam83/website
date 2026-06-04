@@ -1,3 +1,4 @@
+'use client';
 import About from '../components/About';
 import CTASection from '../components/CTASection';
 import { useSiteSettings } from '../contexts/SiteSettingsContext';

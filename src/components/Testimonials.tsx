@@ -1,8 +1,9 @@
+'use client';
 import { motion, AnimatePresence } from 'motion/react';
 import { Star, Quote, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { categories } from '../data/products';
 
 const allProducts = categories.flatMap(c => c.products);
@@ -123,8 +124,8 @@ export default function Testimonials() {
                     </button>
                   </div>
 
-                  <Link 
-                    to={`/product/${testimonials[currentIndex].productId}`}
+                  <Link
+                    href={`/product/${testimonials[currentIndex].productId}`}
                     className="group inline-flex items-center gap-2 text-brand-300 hover:text-brand-100 transition-colors font-medium text-base md:text-lg flex-1 md:justify-end"
                   >
                     <span className="line-clamp-2 text-left md:text-right">
@@ -142,7 +143,7 @@ export default function Testimonials() {
     </section>
     <div className="py-12 bg-white flex justify-center w-full relative z-10">
       <Link
-        to="/products"
+        href="/products"
         className="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-gray-900 bg-amber-400 hover:bg-amber-300 rounded-full transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 transform duration-200 uppercase tracking-wide gap-2"
       >
         {t('Khám phá thêm')}

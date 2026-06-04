@@ -1,7 +1,8 @@
+'use client';
 import { motion } from 'motion/react';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, CircleCheck as CheckCircle2 } from 'lucide-react';
 import { useState, useEffect, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { db, collection, getDocs } from '../localDB';
 
@@ -44,7 +45,7 @@ function ProductCard({ product }: { product: ProductDetail }) {
       transition={{ duration: 0.5 }}
       className="bg-white rounded-[1.5rem] p-4 border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 group flex flex-col h-full cursor-pointer h-[28rem]"
     >
-      <Link to={`/product/${product.id}`} className="block flex-grow flex flex-col h-full relative">
+      <Link href={`/product/${product.id}`} className="block flex-grow flex flex-col h-full relative">
         {product.tag && (
           <div className="absolute top-2 right-2 z-20 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
             {t(product.tag)}
@@ -142,7 +143,7 @@ export default function Products() {
                   <h4 className="text-2xl font-bold text-gray-900">{t(category.title)}</h4>
                   <p className="text-gray-500 mt-2">{t(category.description)}</p>
                 </div>
-                <Link to={`/products`} className="flex items-center text-brand-800 font-medium hover:text-brand-900 group whitespace-nowrap">
+                <Link href={`/products`} className="flex items-center text-brand-800 font-medium hover:text-brand-900 group whitespace-nowrap">
                   {t("Xem tất cả")} {t(category.title)} <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>

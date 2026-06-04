@@ -1,18 +1,18 @@
+'use client';
 import Products from '../components/Products';
 import { useSiteSettings } from '../contexts/SiteSettingsContext';
 import { useTranslation } from 'react-i18next';
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 import SEO from '../components/SEO';
 
 export default function ProductsPage() {
   const settings = useSiteSettings();
   const { t } = useTranslation();
-  const location = useLocation();
 
   useEffect(() => {
-    if (location.hash) {
-      const id = location.hash.replace('#', '');
+    const hash = window.location.hash;
+    if (hash) {
+      const id = hash.replace('#', '');
       const element = document.getElementById(id);
       if (element) {
         setTimeout(() => {
@@ -22,7 +22,7 @@ export default function ProductsPage() {
     } else {
       window.scrollTo(0, 0);
     }
-  }, [location]);
+  }, []);
 
   return (
     <main className="pt-24 min-h-screen">

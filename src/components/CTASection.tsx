@@ -1,3 +1,4 @@
+'use client';
 import { motion } from 'motion/react';
 import { Mail, ArrowRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';

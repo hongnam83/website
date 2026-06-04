@@ -1,3 +1,4 @@
+'use client';
 import { useState, useEffect } from 'react';
 import { Pencil, Trash2, Plus, Image as ImageIcon, X, Database } from 'lucide-react';
 import { db, auth, collection, getDocs, doc, setDoc, deleteDoc, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, createUserWithEmailAndPassword, onAuthStateChanged, User, writeBatch } from '../localDB';

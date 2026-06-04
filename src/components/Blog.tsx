@@ -1,7 +1,8 @@
+'use client';
 import { motion } from 'motion/react';
 import { ArrowRight, Clock } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { db, collection, getDocs } from '../localDB';
 import { blogPosts as defaultBlogPosts } from '../data/blogPosts';
@@ -40,7 +41,7 @@ export default function Blog() {
               {t("Cẩm Nang")} <span className="font-serif italic text-brand-800">{t("Chăm Sóc Nụ Cười")}</span>
             </h3>
           </div>
-          <Link to="/blog" className="hidden md:inline-flex items-center text-brand-800 font-medium hover:text-brand-900 group">
+          <Link href="/blog" className="hidden md:inline-flex items-center text-brand-800 font-medium hover:text-brand-900 group">
             {t("Xem Tất Cả Bài Viết")}
             <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
           </Link>
@@ -48,7 +49,7 @@ export default function Blog() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {latestPosts.map((post, index) => (
-            <Link to={`/blog/${post.id}`} key={post.id} className="block group cursor-pointer flex flex-col h-full h-full">
+            <Link href={`/blog/${post.id}`} key={post.id} className="block group cursor-pointer flex flex-col h-full h-full">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -89,7 +90,7 @@ export default function Blog() {
         </div>
         
         <div className="mt-8 text-center md:hidden">
-          <Link to="/blog" className="inline-flex items-center text-brand-800 font-medium hover:text-brand-900 group">
+          <Link href="/blog" className="inline-flex items-center text-brand-800 font-medium hover:text-brand-900 group">
             {t("Xem Tất Cả Bài Viết")}
             <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
           </Link>
